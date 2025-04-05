@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Monaco from 'svelte-monaco/Monaco.svelte';
 	import type MonacoE from 'monaco-editor';
-	import examplepy from '../../py/example.py?raw';
 	import PyodideWorker from '../lib/worker?worker';
 	import Lights from '$lib/Lights.svelte';
 	import { onMount } from 'svelte';
@@ -9,9 +8,12 @@
 	import tree from '@iconify-icons/iconoir/tree';
 	import share from '@iconify-icons/iconoir/share-android';
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
+	import { examples } from '$lib/examples'
 
 	/** The current script */
-	let value = $state<string>(examplepy);
+	let value = $state<string>(examples[0][1]);
+	let example = $state<string>(examples[0][1])
+	
 	/** Pyodide worker */
 	let worker: Worker | undefined;
 	/** The global id of our current pyodide worker as a sanity check */
@@ -99,6 +101,11 @@
 			<h1>Tree of Color</h1>
 		</div>
 		<div class="right">
+			<select bind:value={example} onchange={() => value = example}>
+				{#each examples as [name, content]}
+					<option value={content}>{name}</option>
+				{/each}
+			</select>
 			<div class="iconAlign icon">
 				<button class="smallIcon">
 					<Icon icon={share} color="white" width="100%" height="100%" />
@@ -124,10 +131,12 @@
 			<div id="statusBar" class:vimMode></div>
 		</div>
 		<div class="vis">
-			<button onclick={run}>Run</button>
-			<button onclick={stop}>Stop</button>
 			<div class="lights">
 				<Lights {lights} />
+			</div>
+			<div class="toolbar">
+				<button onclick={run}>Run</button>
+				<button onclick={stop}>Stop</button>
 			</div>
 		</div>
 	</main>
@@ -149,14 +158,27 @@
 	}
 
 	main {
-		width: 80vw;
+		width: 100vw;
 		height: 100%;
 		display: flex;
 		flex-direction: row;
 	}
 
 	.vis {
-		width: 20vw;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.toolbar {
+			width: 100%;
+			display: flex;
+			padding: 0.5rem;
+			
+			button {
+				padding: 0.5rem 1rem;
+			}
+		}
 	}
 
 	header {
@@ -184,11 +206,11 @@
 		width: 100%;
 		padding-top: 1rem;
 		background-color: #1e1e1e;
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1rem);
+		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem);
 	}
 
 	.editor:has(> .vimMode) {
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1rem - 1.5rem);
+		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1.5rem);
 	}
 
 	.vimMode {
