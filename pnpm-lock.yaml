@@ -60,6 +60,9 @@ importers:
       svelte:
         specifier: ^5.0.0
         version: 5.25.6
+      svelte-canvas:
+        specifier: ^2.0.2
+        version: 2.0.2
       svelte-check:
         specifier: ^4.0.0
         version: 4.1.5(svelte@5.25.6)(typescript@5.8.3)
@@ -590,6 +593,9 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
+  canvas-size@1.2.6:
+    resolution: {integrity: sha512-x2iVHOrZ5x9V0Hwx6kBz+Yxf/VCAII+jrD6WLjJbytJLozHq/oDJjEva432Os0eHxWMFR0vYlLJwTr6QxyxQqw==}
+
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
@@ -798,6 +804,9 @@ packages:
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+
+  hit-canvas@0.2.3:
+    resolution: {integrity: sha512-B9g7xsqu+gOt1S0b/IwMuCrskumPX7jILDKAPP96iW8F3eJFU7v87+e8N4jOEstY2vcpJzsG1cmiMkiwaaEM3Q==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -1076,6 +1085,9 @@ packages:
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
+
+  svelte-canvas@2.0.2:
+    resolution: {integrity: sha512-316P22Dt/+A6vW9mLzW4/DjMJ/H1B3r8R7n3SBe0kaq5hWWfZwdNJCBdS2myvjs7y5c9meHxo4d+Ipsz2Rbcqw==}
 
   svelte-check@4.1.5:
     resolution: {integrity: sha512-Gb0T2IqBNe1tLB9EB1Qh+LOe+JB8wt2/rNBDGvkxQVvk8vNeAoG+vZgFB/3P5+zC7RWlyBlzm9dVjZFph/maIg==}
@@ -1653,6 +1665,8 @@ snapshots:
 
   callsites@3.1.0: {}
 
+  canvas-size@1.2.6: {}
+
   chalk@4.1.2:
     dependencies:
       ansi-styles: 4.3.0
@@ -1883,6 +1897,8 @@ snapshots:
   graphemer@1.4.0: {}
 
   has-flag@4.0.0: {}
+
+  hit-canvas@0.2.3: {}
 
   ignore@5.3.2: {}
 
@@ -2127,6 +2143,12 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  svelte-canvas@2.0.2:
+    dependencies:
+      canvas-size: 1.2.6
+      hit-canvas: 0.2.3
+      svelte: 5.25.6
 
   svelte-check@4.1.5(svelte@5.25.6)(typescript@5.8.3):
     dependencies:

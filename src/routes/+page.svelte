@@ -2,6 +2,7 @@
 	import Monaco from 'svelte-monaco/Monaco.svelte';
 	import examplepy from '../../py/example.py?raw';
 	import PyodideWorker from '../lib/worker?worker';
+	import Lights from '$lib/Lights.svelte';
 
 	/** The current script */
 	let value = $state<string>(examplepy);
@@ -13,6 +14,8 @@
 	let buffer: SharedArrayBuffer;
 	/** RAF id */
 	let raf: number;
+
+	let lights = $state<Uint8Array>();
 
     let lastFrameTime: number;
 
@@ -27,7 +30,14 @@
 			buffer
 		});
 
-		worker.onmessage = (ev) => console.log(ev.data);
+		worker.onmessage = ({ data }) => {
+			console.log(data);
+			if (typeof data === 'object' && data !== null) {
+				if ("output" in data && data["output"] instanceof Uint8Array) {
+					lights = data["output"];
+				}
+			}
+		}
 
         lastFrameTime = Date.now();
 		frame();
@@ -60,6 +70,9 @@
 		<div class="vis">
 			<button onclick={run}>Run</button>
 			<button onclick={stop}>Stop</button>
+			<div class="lights">
+				<Lights {lights} />
+			</div>
 		</div>
 	</main>
 	<footer>Source on GitHub</footer>

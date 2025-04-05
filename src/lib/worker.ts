@@ -17,11 +17,20 @@ async function load(): Promise<PyodideInterface> {
 	const pyodide = await loadPyodide({
 		indexURL: '/artifacts/pyodide'
 	});
+	
+	let buffer = new Uint8Array(1500)
+	let idx = 0;
 
 	pyodide.setStdin(new StdinFrameHandler());
 	pyodide.setStdout({
 		raw(code) {
-			self.postMessage({ output: code, id: gid });
+			buffer[idx] = code;
+			idx++;
+			if (idx == buffer.length) {
+				self.postMessage({ output: buffer, id: gid });
+				buffer = new Uint8Array(1500);
+				idx = 0;
+			}
 		}
 	});
 	pyodide.setStderr({
