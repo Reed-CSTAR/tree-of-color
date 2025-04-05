@@ -10,7 +10,8 @@
 				shouldRegister() {
 					return !window.sessionStorage.getItem("treeOfColor:coiReloadedBySelf") ?? true
 				},
-				doReload: () => {
+				coepCredentialless() { return false },
+				doReload() {
 					window.sessionStorage.setItem("treeOfColor:coiReloadedBySelf", true)
 					window.location.reload()
 				},
