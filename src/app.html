@@ -5,6 +5,17 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Tree of Color</title>
+		<script>
+			window.coi = { 
+				shouldRegister() {
+					return window.sessionStorage.getItem("treeOfColor:coiReloadedBySelf") ?? false
+				},
+				doReload: () => {
+					window.sessionStorage.setItem("treeOfColor:coiReloadedBySelf", true)
+					window.location.reload()
+				},
+			}
+		</script>
 		<script src="coi/sw.js"></script>
 		%sveltekit.head%
 	</head>
