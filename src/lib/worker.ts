@@ -15,7 +15,7 @@ class StdinFrameHandler {
 
 async function load(): Promise<PyodideInterface> {
 	const pyodide = await loadPyodide({
-		indexURL: '/artifacts/pyodide'
+		indexURL: '/tree-of-color/artifacts/pyodide'
 	});
 	
 	let buffer = new Uint8Array(1500)
