@@ -188,13 +188,16 @@
 	}
 
 	.editor:has(> .vimMode) {
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1rem - 1rem);
+		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1rem - 1.5rem);
 	}
 
 	.vimMode {
 		background-color: #1e1e1e;
 		color: #d4d4d4;
 		width: 100%;
+		height: 1.5rem;
+		display: flex;
+		align-items: center;
 	}
 
 	.icon {
