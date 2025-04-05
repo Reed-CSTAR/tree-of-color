@@ -21,4 +21,3 @@ class Animation:
 if __name__ == '__main__':
     animation = Animation()
     treeofcolor.App(animation).run()
-
