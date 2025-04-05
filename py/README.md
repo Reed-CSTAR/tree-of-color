@@ -1,8 +1,12 @@
-# py module
+# Python Modlue
 
-This defines a convenient wrapper around our animation frame system.
+This defines a convenient wrapper for writing client code.
 
 ## Specification
 
-We have `frame\n` as input, with a direct binary dump of `n` 2-byte numbers as to represent `rrggbbaa`,
-as to encourage drawing based off of animation frames.
+This is a client-server protocol over stdin/stdout. Connection flow is as follows:
+
+1. Server connects to the client by running it.
+2. Server sends `frame\n` or disconnects by terminating the process.
+3. Client sends 500 `rrggbb` values (3 bytes/LED) in response to `frame\n`.
+4. Client listens for `frame\n` (2).
