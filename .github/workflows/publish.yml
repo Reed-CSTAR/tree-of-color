@@ -29,8 +29,6 @@ jobs:
         run: pnpm install
       - name: Fetch Artifacts
         run: pnpm run fetch
-      - name: Fetch Coi
-        run: pnpm run coi
       - name: Build page
         run: pnpm run build
       - name: Upload built project output
