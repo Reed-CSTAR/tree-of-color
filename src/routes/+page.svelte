@@ -5,13 +5,32 @@
 
     let pyodide: PyodideInterface;
 
-    let value = $state<string>("")
+    let value = $state<string>("");
+
+    function stdin(): string {
+        return ""
+    }
+
+    function stdout(msg: string) {
+        console.log(msg)
+    }
+    
+    function stderr(msg: string) {
+        console.error(msg)
+    }
 
     onMount(async () => {
         pyodide = await loadPyodide({
-            indexURL: "./artifacts/pyodide"
+            indexURL: "./artifacts/pyodide",
+            stdin,
+            stdout,
+            stderr
         })
     })
+
+    async function run() {
+        console.log(await pyodide.runPythonAsync(value))
+    }
 </script>
 
 <div class="container">
@@ -25,6 +44,9 @@
             on:ready={(event) => console.log(event.detail)}
             bind:value
         />
+        <div class="vis">
+            <button onclick={run}>Run</button>
+        </div>
     </main>
     <footer>
         Source on GitHub
@@ -47,8 +69,14 @@
     }
 
     main {
-        width: 100%;
+        width: 80vw;
         height: 90vh;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .vis {
+        width: 20vw;
     }
 
     header {
