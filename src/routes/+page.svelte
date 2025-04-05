@@ -14,6 +14,8 @@
 	/** RAF id */
 	let raf: number;
 
+    let lastFrameTime: number;
+
 	async function run() {
 		worker?.terminate();
 		worker = new PyodideWorker();
@@ -27,6 +29,7 @@
 
 		worker.onmessage = (ev) => console.log(ev.data);
 
+        lastFrameTime = Date.now();
 		frame();
 	}
 
@@ -36,8 +39,12 @@
 	}
 
 	function frame() {
-		Atomics.notify(new Int32Array(buffer), 0);
-		raf = requestAnimationFrame(frame);
+        if (Date.now() - lastFrameTime > 1000) {
+            Atomics.notify(new Int32Array(buffer), 0);
+            lastFrameTime = Date.now();
+        }
+        
+        raf = requestAnimationFrame(frame);
 	}
 </script>
 
