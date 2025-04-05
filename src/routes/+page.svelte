@@ -1,35 +1,43 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-    import { loadPyodide, type PyodideInterface } from 'pyodide';
     import Monaco from 'svelte-monaco/Monaco.svelte'
+    import examplepy from '../../py/example.py?raw'
+    import PyodideWorker from '../lib/worker?worker'
 
-    let pyodide: PyodideInterface;
-
-    let value = $state<string>("");
-
-    function stdin(): string {
-        return ""
-    }
-
-    function stdout(msg: string) {
-        console.log(msg)
-    }
-    
-    function stderr(msg: string) {
-        console.error(msg)
-    }
-
-    onMount(async () => {
-        pyodide = await loadPyodide({
-            indexURL: "./artifacts/pyodide",
-            stdin,
-            stdout,
-            stderr
-        })
-    })
+    /** The current script */
+    let value = $state<string>(examplepy);
+    /** Pyodide worker */
+    let worker: Worker | undefined;
+    /** The global id of our current pyodide worker as a sanity check */
+    let id = $state<number>(0);
+    /** Synchronises frames between us and the web worker. */
+    let buffer: SharedArrayBuffer;
+    /** RAF id */
+    let raf: number;
 
     async function run() {
-        console.log(await pyodide.runPythonAsync(value))
+        worker?.terminate();
+        worker = new PyodideWorker();
+        buffer = new SharedArrayBuffer(4);
+
+        worker.postMessage({
+            id: id++,
+            python: value,
+            buffer
+        });
+
+        worker.onmessage = (ev) => console.log(ev.data)
+
+        frame()
+    }
+
+    function stop() {
+        worker?.terminate();
+        cancelAnimationFrame(raf)
+    }
+
+    function frame() {
+        Atomics.notify(new Int32Array(buffer), 0)
+        raf = requestAnimationFrame(frame);
     }
 </script>
 
@@ -46,6 +54,7 @@
         />
         <div class="vis">
             <button onclick={run}>Run</button>
+            <button onclick={stop}>Stop</button>
         </div>
     </main>
     <footer>
