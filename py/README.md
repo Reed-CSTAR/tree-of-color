@@ -14,5 +14,5 @@ This is a client-server protocol over stdin/stdout. Connection flow is as follow
 
 ## Questions
 
-+ Is either the client or server in charge of disabling buffering? My vote is
+- Is either the client or server in charge of disabling buffering? My vote is
   that the server does that.

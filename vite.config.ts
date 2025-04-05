@@ -6,8 +6,8 @@ export default defineConfig({
 	server: {
 		headers: {
 			// https://stackoverflow.com/a/65675390/7589775
-			"Cross-Origin-Opener-Policy": "same-origin",
-			"Cross-Origin-Embedder-Policy": "require-corp"
+			'Cross-Origin-Opener-Policy': 'same-origin',
+			'Cross-Origin-Embedder-Policy': 'require-corp'
 		}
 	}
 });
