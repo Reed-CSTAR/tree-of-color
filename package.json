@@ -14,7 +14,8 @@
 		"lint": "prettier --check . && eslint .",
 		"test:e2e": "playwright test",
 		"test": "npm run test:e2e",
-		"fetch": "tsx fetch.ts && tar -xvjf static/artifacts/tmp.tar.bz2 && mv pyodide static/artifacts/"
+		"fetch": "tsx fetch.ts && tar -xvjf static/artifacts/tmp.tar.bz2 && mv pyodide static/artifacts/",
+		"coi": "mkdir static/coi && cp node_modules/coi-serviceworker/coi-serviceworker.js static/coi/sw.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
@@ -25,6 +26,7 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/node": "^22.14.0",
+		"coi-serviceworker": "^0.1.7",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
