@@ -9,20 +9,22 @@
 	import share from '@iconify-icons/iconoir/share-android';
 	import github from '@iconify-icons/iconoir/github';
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
-	import { examples } from '$lib/examples'
-	import lz from 'lz-string'
+	import { examples } from '$lib/examples';
+	import lz from 'lz-string';
 
-	const { decompressFromBase64, compressToBase64 } = lz
+	const { decompressFromBase64, compressToBase64 } = lz;
 
 	/** The current script */
-	let value = $state<string>(`# There are more examples at the top right dropdown! This one
-# is intended to only display solid green.\n` + examples[0][1]);
-	let hasCheckedHash = $state(false)
+	let value = $state<string>(
+		`# There are more examples at the top right dropdown! This one
+# is intended to only display solid green.\n` + examples[0][1]
+	);
+	let hasCheckedHash = $state(false);
 
 	let example = $state<string>(examples[0][1]);
 
-	let status = $state<"stopped" | "starting" | "started" | "fatal">("stopped");
-	
+	let status = $state<'stopped' | 'starting' | 'started' | 'fatal'>('stopped');
+
 	/** Pyodide worker */
 	let worker: Worker | undefined;
 	/** The global id of our current pyodide worker as a sanity check */
@@ -34,10 +36,10 @@
 
 	let lights = $state<Uint8Array>();
 
-    let lastFrameTime: number;
+	let lastFrameTime: number;
 
-	let editor = $state<MonacoE.editor.IStandaloneCodeEditor>()
-	let vimMode = $state(false)
+	let editor = $state<MonacoE.editor.IStandaloneCodeEditor>();
+	let vimMode = $state(false);
 
 	let initVimMode: any;
 	let vimInstance: any;
@@ -48,15 +50,15 @@
 		if (window.location.hash.substring(1)) {
 			value = decompressFromBase64(window.location.hash.substring(1));
 		}
-        hasCheckedHash = true;
+		hasCheckedHash = true;
 	});
 
 	$effect.pre(() => {
-		if (hasCheckedHash) window.location.hash = compressToBase64(value)
-	})
+		if (hasCheckedHash) window.location.hash = compressToBase64(value);
+	});
 
 	async function run() {
-		status = "starting"
+		status = 'starting';
 		worker?.terminate();
 		worker = new PyodideWorker();
 		buffer = new SharedArrayBuffer(4);
@@ -70,24 +72,24 @@
 		worker.onmessage = ({ data }) => {
 			console.log(data);
 			if (typeof data === 'object' && data !== null) {
-				if ("loaded" in data && data["loaded"]) {
+				if ('loaded' in data && data['loaded']) {
 					status = 'started';
 				}
 
-				if ("error" in data) {
+				if ('error' in data) {
 					// TODO: pipe to console
-					if ("fatal" in data) {
+					if ('fatal' in data) {
 						status = 'fatal';
 					}
 				}
-				
-				if ("output" in data && data["output"] instanceof Uint8Array) {
-					lights = data["output"];
+
+				if ('output' in data && data['output'] instanceof Uint8Array) {
+					lights = data['output'];
 				}
 			}
-		}
+		};
 
-        lastFrameTime = Date.now();
+		lastFrameTime = Date.now();
 		frame();
 	}
 
@@ -100,20 +102,20 @@
 	$effect(() => {
 		if (editor) {
 			if (vimMode) {
-				vimInstance = initVimMode(editor, document.getElementById('statusBar'))
+				vimInstance = initVimMode(editor, document.getElementById('statusBar'));
 			} else {
 				vimInstance?.dispose();
 			}
 		}
-	})
+	});
 
 	function frame() {
-        if (Date.now() - lastFrameTime > 1000) {
-            Atomics.notify(new Int32Array(buffer), 0);
-            lastFrameTime = Date.now();
-        }
-        
-        raf = requestAnimationFrame(frame);
+		if (Date.now() - lastFrameTime > 1000) {
+			Atomics.notify(new Int32Array(buffer), 0);
+			lastFrameTime = Date.now();
+		}
+
+		raf = requestAnimationFrame(frame);
 	}
 </script>
 
@@ -126,7 +128,7 @@
 			<h1>Tree of Color</h1>
 		</div>
 		<div class="right">
-			<select bind:value={example} onchange={() => value = example}>
+			<select bind:value={example} onchange={() => (value = example)}>
 				{#each examples as [name, content]}
 					<option value={content}>{name}</option>
 				{/each}
@@ -137,14 +139,14 @@
 				</button>
 			</div>
 			<div class="iconAlign icon">
-				<button class="smallIcon" onclick={() => vimMode = !vimMode} title="Vim Mode">
+				<button class="smallIcon" onclick={() => (vimMode = !vimMode)} title="Vim Mode">
 					<Icon icon={vim} color="white" width="100%" height="100%" />
 				</button>
 			</div>
-            <div class="iconAlign icon">
+			<div class="iconAlign icon">
 				<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" target="_blank">
 					<Icon icon={github} color="white" width="100%" height="100%" />
-                </a>
+				</a>
 			</div>
 		</div>
 	</header>
@@ -166,10 +168,12 @@
 			</div>
 			<div class="toolbar">
 				<div class="buttons">
-					<button id="run" onclick={run}>Run</button>
-					<button id="stop" onclick={stop}>Stop</button>
-					<button id="console" onclick={() => alert("not implemented yet sry")}>Console</button>
-					<button id="clear" onclick={() => lights = undefined}>Clear Lights</button>
+					<button disabled={status === 'started' || status === 'starting'} id="run" onclick={run}>
+						Run
+					</button>
+					<button disabled={status === 'stopped' || status === 'fatal'} id="stop" onclick={stop}>Stop</button>
+					<button id="console" onclick={() => alert('not implemented yet sry')}>Console</button>
+					<button id="clear" onclick={() => (lights = undefined)}>Clear Lights</button>
 				</div>
 				<div class="status">
 					{status}
@@ -222,7 +226,7 @@
 				margin-right: 0.5rem;
 				font-size: 1.5rem;
 			}
-			
+
 			.buttons button {
 				padding: 0.5rem 1rem;
 				border-radius: 0.2rem;
@@ -233,11 +237,16 @@
 				background: none;
 				color: white;
 
+                &:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.5;
+                }
+
 				&#run {
 					background-color: rgba(234, 255, 150, 0.2);
 					border-bottom: 2px solid rgb(234, 255, 150);
 				}
-				
+
 				&#stop {
 					background-color: rgba(212, 66, 64, 0.2);
 					border-bottom: 2px solid rgb(212, 66, 64);
@@ -266,7 +275,6 @@
 		padding: 0.75rem 0.5rem;
 		display: flex;
 		justify-content: space-between;
-
 
 		.left {
 			display: flex;
@@ -312,7 +320,7 @@
 		background-color: rgba(0, 0, 0, 0);
 		border: none;
 		padding: 0;
-        display: inline-block;
+		display: inline-block;
 		cursor: pointer;
 	}
 
