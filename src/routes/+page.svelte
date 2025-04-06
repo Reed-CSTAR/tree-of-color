@@ -7,6 +7,7 @@
 	import Icon from '@iconify/svelte';
 	import tree from '@iconify-icons/iconoir/tree';
 	import share from '@iconify-icons/iconoir/share-android';
+	import github from '@iconify-icons/iconoir/github';
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
 	import { examples } from '$lib/examples'
 	import lz from 'lz-string'
@@ -130,14 +131,19 @@
 				{/each}
 			</select>
 			<div class="iconAlign icon">
-				<button class="smallIcon">
+				<button class="smallIcon" title="Share">
 					<Icon icon={share} color="white" width="100%" height="100%" />
 				</button>
 			</div>
 			<div class="iconAlign icon">
-				<button class="smallIcon" onclick={() => vimMode = !vimMode}>
+				<button class="smallIcon" onclick={() => vimMode = !vimMode} title="Vim Mode">
 					<Icon icon={vim} color="white" width="100%" height="100%" />
 				</button>
+			</div>
+            <div class="iconAlign icon">
+				<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" target="_blank">
+					<Icon icon={github} color="white" width="100%" height="100%" />
+                </a>
 			</div>
 		</div>
 	</header>
@@ -299,12 +305,13 @@
 		height: calc(68px - 1rem);
 	}
 
-	button.smallIcon {
-		width: calc(2 * (68px - 1rem) / 3);
-		height: calc(2 * (68px - 1rem) / 3);
+	.smallIcon {
+		width: calc(4 * (68px - 1rem) / 5);
+		height: calc(4 * (68px - 1rem) / 5);
 		background-color: rgba(0, 0, 0, 0);
 		border: none;
 		padding: 0;
+        display: inline-block;
 		cursor: pointer;
 	}
 
