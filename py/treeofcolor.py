@@ -49,8 +49,15 @@ class App:
 
     def _mainloop(self):
         while True:
-            if input() != 'frame':
-                raise ValueError('Server sent malformed request.')
+            req = input()
+            
+            # this is for the js side: this stops our `stdin` handler from blocking
+            # the event loop in the worker thread
+            if req == 'wait':
+                continue
+
+            if req != 'frame':
+                raise ValueError(f'Server sent malformed request "{req}".')
 
             sys.stdout.buffer.write(self.callback().serialize())
 

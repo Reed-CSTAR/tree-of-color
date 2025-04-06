@@ -3,25 +3,35 @@ import treeofcolorpy from '../../py/treeofcolor.py?raw';
 
 let gid: number;
 let gbuffer: SharedArrayBuffer;
+let interrupt = new SharedArrayBuffer(1)
 
-class StdinFrameHandler {
-	constructor() {}
+let running = false;
 
-	stdin() {
-		Atomics.wait(new Int32Array(gbuffer), 0, 0);
-		return 'frame\n';
-	}
+/** From pyodide */
+type InFuncType = () => null | undefined | string | ArrayBuffer | Uint8Array | number;
+const stdin: InFuncType = () => {
+    // we add a timeout and use `wait` to allow processing of other tasks
+    // (e.g. worker messages) in the event loop
+    if (Atomics.wait(new Int32Array(gbuffer), 0, 0, 50) === 'timed-out') {
+        if ((new Uint8Array(interrupt))[0] != 0) {
+            throw "interrupted"
+        }
+        return 'wait\n';
+    }
+
+    return 'frame\n';
 }
 
 async function load(): Promise<PyodideInterface> {
 	const pyodide = await loadPyodide({
 		indexURL: '/tree-of-color/artifacts/pyodide'
 	});
-	
-	let buffer = new Uint8Array(1500)
+
+	let buffer = new Uint8Array(1500);
 	let idx = 0;
 
-	pyodide.setStdin(new StdinFrameHandler());
+	pyodide.setStdin({ stdin });
+    pyodide.setInterruptBuffer(interrupt)
 	pyodide.setStdout({
 		raw(code) {
 			buffer[idx] = code;
@@ -33,6 +43,7 @@ async function load(): Promise<PyodideInterface> {
 			}
 		}
 	});
+
 	pyodide.setStderr({
 		raw(code) {
 			self.postMessage({ output: code, id: gid });
@@ -52,20 +63,31 @@ interface Message {
 	buffer: SharedArrayBuffer;
 }
 
-self.onmessage = async (event) => {
+self.addEventListener("message", async (event) => {
 	const pyodide = await pyodideLoader;
+
+	if (typeof event.data !== 'object' || event.data === null) {
+		self.postMessage({ worker: true, message: 'malformed request' });
+		return;
+	}
+
+    (new Uint8Array(interrupt))[0] = 0;
+
 	const { id, python, buffer }: Message = event.data;
-	self.postMessage({ loaded: true, data: event.data });
+	self.postMessage({ loaded: true, data: event.data, interrupt });
 
 	gid = id;
 	gbuffer = buffer;
 
 	try {
+		running = true;
 		const result = await pyodide.runPythonAsync(python);
+		running = false;
 		self.postMessage({ output: result, id: gid, final: true });
 	} catch (error) {
 		if (typeof error === 'object' && error !== null && 'message' in error) {
 			self.postMessage({ error: error.message, id, fatal: true });
 		}
+		running = false;
 	}
-};
+});

@@ -87,9 +87,15 @@ importers:
       svelte-check:
         specifier: ^4.0.0
         version: 4.1.5(svelte@5.25.6)(typescript@5.8.3)
+      svelte-french-toast:
+        specifier: ^1.2.0
+        version: 1.2.0(svelte@5.25.6)
       svelte-monaco:
         specifier: ^1.0.3
         version: 1.0.3(monaco-editor@0.52.2)(svelte@5.25.6)
+      svelte-mosaic:
+        specifier: ^1.0.0
+        version: 1.0.0(svelte@5.25.6)
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
@@ -1251,11 +1257,26 @@ packages:
       svelte:
         optional: true
 
+  svelte-french-toast@1.2.0:
+    resolution: {integrity: sha512-5PW+6RFX3xQPbR44CngYAP1Sd9oCq9P2FOox4FZffzJuZI2mHOB7q5gJBVnOiLF5y3moVGZ7u2bYt7+yPAgcEQ==}
+    peerDependencies:
+      svelte: ^3.57.0 || ^4.0.0
+
   svelte-monaco@1.0.3:
     resolution: {integrity: sha512-FN3vJAfdQPp89k5dGCGKFMgelURhPiSw4PkW/pgpGjTcfltegaX35UjdvedUGM5K3kp1TWzR1FhBZDqOnFYJHw==}
     peerDependencies:
       monaco-editor: '>=0.50.0 < 1'
       svelte: '>=4.0.0'
+
+  svelte-mosaic@1.0.0:
+    resolution: {integrity: sha512-3lKbXRJ8pNPXGpROibQIAxC6bJ+V7u8YBSSyCPe/dxfbK9oHsGW7IfB9CjhmcyG9PfNSjOCsrRpj3NF8xZ/Vsg==}
+    peerDependencies:
+      svelte: '>=4.0.0'
+
+  svelte-writable-derived@3.1.1:
+    resolution: {integrity: sha512-w4LR6/bYZEuCs7SGr+M54oipk/UQKtiMadyOhW0PTwAtJ/Ai12QS77sLngEcfBx2q4H8ZBQucc9ktSA5sUGZWw==}
+    peerDependencies:
+      svelte: ^3.2.1 || ^4.0.0-next.1 || ^5.0.0-next.94
 
   svelte@5.25.6:
     resolution: {integrity: sha512-RGkaeAXDuJdvhA1fdSM5GgD++vYfJYijZL0uN6kM2s/TRJ663jktBhZlF0qjzAJGR/34PtaeT3G8MKJY1EKeqg==}
@@ -2418,11 +2439,24 @@ snapshots:
     optionalDependencies:
       svelte: 5.25.6
 
+  svelte-french-toast@1.2.0(svelte@5.25.6):
+    dependencies:
+      svelte: 5.25.6
+      svelte-writable-derived: 3.1.1(svelte@5.25.6)
+
   svelte-monaco@1.0.3(monaco-editor@0.52.2)(svelte@5.25.6):
     dependencies:
       '@monaco-editor/loader': 1.5.0
       monaco-editor: 0.52.2
       monaco-themes: 0.4.4
+      svelte: 5.25.6
+
+  svelte-mosaic@1.0.0(svelte@5.25.6):
+    dependencies:
+      svelte: 5.25.6
+
+  svelte-writable-derived@3.1.1(svelte@5.25.6):
+    dependencies:
       svelte: 5.25.6
 
   svelte@5.25.6:

@@ -11,6 +11,7 @@
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
 	import { examples } from '$lib/examples';
 	import lz from 'lz-string';
+    import toast from 'svelte-french-toast';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -31,6 +32,7 @@
 	let id = $state<number>(0);
 	/** Synchronises frames between us and the web worker. */
 	let buffer: SharedArrayBuffer;
+    let interruptBuffer: SharedArrayBuffer;
 	/** RAF id */
 	let raf: number;
 
@@ -57,10 +59,19 @@
 		if (hasCheckedHash) window.location.hash = compressToBase64(value);
 	});
 
-	async function run() {
+	/** Notifies the worker to stop waiting for a frame signal */
+	function requestWorkerFrame() {
+		Atomics.notify(new Int32Array(buffer), 0);
+	}
+
+	async function run(refreshWorker = false) {
 		status = 'starting';
-		worker?.terminate();
-		worker = new PyodideWorker();
+
+		if (refreshWorker || !worker) {
+			worker?.terminate();
+			worker = new PyodideWorker();
+		}
+
 		buffer = new SharedArrayBuffer(4);
 
 		worker.postMessage({
@@ -72,8 +83,9 @@
 		worker.onmessage = ({ data }) => {
 			console.log(data);
 			if (typeof data === 'object' && data !== null) {
-				if ('loaded' in data && data['loaded']) {
+				if ('loaded' in data && data['loaded'] && data["interrupt"]) {
 					status = 'started';
+                    interruptBuffer = data["interrupt"]
 				}
 
 				if ('error' in data) {
@@ -89,12 +101,20 @@
 			}
 		};
 
+        worker.onerror = (ev) => console.error(ev)
+        worker.onmessageerror = (ev) => console.error(ev)
+
 		lastFrameTime = Date.now();
 		frame();
 	}
 
-	function stop() {
-		worker?.terminate();
+	function stop(hard = false) {
+		if (hard) {
+			worker?.terminate();
+			worker = undefined;
+		} else {
+            (new Uint8Array(interruptBuffer))[0] = 2;
+		}
 		cancelAnimationFrame(raf);
 		status = 'stopped';
 	}
@@ -111,7 +131,7 @@
 
 	function frame() {
 		if (Date.now() - lastFrameTime > 1000) {
-			Atomics.notify(new Int32Array(buffer), 0);
+			requestWorkerFrame();
 			lastFrameTime = Date.now();
 		}
 
@@ -122,9 +142,11 @@
 <div class="container">
 	<header>
 		<div class="left">
-			<div class="icon">
-				<Icon icon={tree} color="white" width="100%" height="100%" />
-			</div>
+			<div class="logoContainer">
+                <div class="logo">
+                    <Icon icon={tree} color="white" width="100%" height="100%" />
+                </div>
+            </div>
 			<h1>Tree of Color</h1>
 		</div>
 		<div class="right">
@@ -134,7 +156,10 @@
 				{/each}
 			</select>
 			<div class="iconAlign icon">
-				<button class="smallIcon" title="Share">
+				<button class="smallIcon" title="Share" onclick={() => {
+                    navigator.clipboard.writeText(location.href);
+                    toast.success("Copied share link to clipboard!")
+                }}>
 					<Icon icon={share} color="white" width="100%" height="100%" />
 				</button>
 			</div>
@@ -163,20 +188,52 @@
 			<div id="statusBar" class:vimMode></div>
 		</div>
 		<div class="vis">
-			<div class="lights">
-				<Lights {lights} />
-			</div>
+            <Lights {lights} />
 			<div class="toolbar">
 				<div class="buttons">
-					<button disabled={status === 'started' || status === 'starting'} id="run" onclick={run}>
+					<button
+						disabled={status === 'started' || status === 'starting'}
+						id="run"
+						onclick={() => run(false)}
+					>
 						Run
 					</button>
-					<button disabled={status === 'stopped' || status === 'fatal'} id="stop" onclick={stop}>Stop</button>
+					<button
+						disabled={status === 'stopped' || status === 'fatal'}
+						id="stop"
+						onclick={() => stop(false)}>Stop</button
+					>
 					<button id="console" onclick={() => alert('not implemented yet sry')}>Console</button>
-					<button id="clear" onclick={() => (lights = undefined)}>Clear Lights</button>
+					<button
+                        id="clear"
+                        onclick={() => (lights = undefined)}
+                        disabled={lights == undefined}
+                        title="Clears off the current LED lights"
+                    >Clear</button>
+					<button
+						id="kill"
+                        title="Restarts the Python Service Worker"
+                        disabled={() => worker == undefined}
+						onclick={() => {
+							lights = undefined;
+							stop(true);
+						}}>Kill</button
+					>
+					<button
+                        disabled={status === 'stopped' || status === 'fatal'}
+						id="animate"
+						onclick={() => {
+							requestWorkerFrame();
+						}}>Animate</button
+					>
 				</div>
 				<div class="status">
-					{status}
+                    {#if status === 'fatal'}
+                        <!-- we give a nicer name to fatal errors to discourage killing -->
+					    halted
+                    {:else}
+                        {status}
+                    {/if}
 				</div>
 			</div>
 		</div>
@@ -237,10 +294,10 @@
 				background: none;
 				color: white;
 
-                &:disabled {
-                    cursor: not-allowed;
-                    opacity: 0.5;
-                }
+				&:disabled {
+					cursor: not-allowed;
+					opacity: 0.5;
+				}
 
 				&#run {
 					background-color: rgba(234, 255, 150, 0.2);
@@ -262,6 +319,16 @@
 					border-bottom: 2px solid rgb(44, 50, 54);
 				}
 
+                &#kill {
+					background-color: rgba(59, 0, 0, 0.2);
+					border-bottom: 2px solid rgb(59, 0, 0);
+				}
+
+                &#animate {
+					background-color: rgba(134, 0, 175, 0.2);
+					border-bottom: 2px solid rgb(134, 0, 175);
+				}
+
 				&:hover {
 					filter: brightness(120%);
 				}
@@ -280,24 +347,36 @@
 			display: flex;
 			align-items: center;
 		}
-	}
 
-	h1 {
-		margin: 0;
-		color: #d4d4d4;
-		font-weight: 400;
-		margin-left: 0.5rem;
+        .logo {
+            height: calc(68px - 1rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .logo {
+                width: calc(68px - 4px - 1rem);
+                height: calc(68px - 4px - 1rem);
+            }
+        }
+
+        h1 {
+            margin: 0;
+            color: #d4d4d4;
+            font-weight: 400;
+            margin-left: calc(0.5rem + 4px);
+        }
 	}
 
 	.editor {
 		width: 100%;
 		padding-top: 1rem;
 		background-color: #1e1e1e;
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem);
+		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1px);
 	}
 
 	.editor:has(> .vimMode) {
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1.5rem);
+		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1px - 1.5rem);
 	}
 
 	.vimMode {
@@ -307,11 +386,6 @@
 		height: 1.5rem;
 		display: flex;
 		align-items: center;
-	}
-
-	.icon {
-		width: calc(68px - 1rem);
-		height: calc(68px - 1rem);
 	}
 
 	.smallIcon {

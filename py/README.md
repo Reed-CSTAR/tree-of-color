@@ -11,8 +11,3 @@ This is a client-server protocol over stdin/stdout. Connection flow is as follow
    the stdin file.
 3. Client sends 500 `rrggbb` values (3 bytes/LED) in response to `frame\n`.
 4. Client listens for `frame\n` (2).
-
-## Questions
-
-- Is either the client or server in charge of disabling buffering? My vote is
-  that the server does that.
