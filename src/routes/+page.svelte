@@ -9,9 +9,14 @@
 	import share from '@iconify-icons/iconoir/share-android';
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
 	import { examples } from '$lib/examples'
+	import lz from 'lz-string'
+
+	const { decompressFromBase64, compressToBase64 } = lz
 
 	/** The current script */
 	let value = $state<string>(examples[0][1]);
+	let hasCheckedHash = $state(false)
+
 	let example = $state<string>(examples[0][1]);
 
 	let status = $state<"stopped" | "starting" | "started" | "fatal">("stopped");
@@ -38,10 +43,14 @@
 	onMount(async () => {
 		const mvImport = await import('monaco-vim');
 		initVimMode = mvImport.initVimMode;
+		if (window.location.hash.substring(1)) {
+			value = decompressFromBase64(window.location.hash.substring(1));
+			hasCheckedHash = true;
+		}
 	});
 
-	$effect(() => {
-		window.location.hash = "test"
+	$effect.pre(() => {
+		if (hasCheckedHash) window.location.hash = compressToBase64(value)
 	})
 
 	async function run() {

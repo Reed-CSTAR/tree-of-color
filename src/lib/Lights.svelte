@@ -16,7 +16,7 @@
                     {@const g = lights[(strip * lightCount + light) * 3 + 1]}
                     {@const b = lights[(strip * lightCount + light) * 3 + 2]}
 
-                    <div class="square" style="background-color: rgb({r}, {g}, {b})"></div>
+                    <div class="light" style="background-color: rgb({r}, {g}, {b})"></div>
                 {/each}
             </div>
         {/each}
@@ -24,7 +24,7 @@
 </div>
 
 <style>
-    .square {
+    .light {
         width: 10px;
         height: 10px;
         border-radius: 50%;
@@ -34,6 +34,7 @@
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 0.5rem;
+        gap: 2px;
     }
 
     .lights {
