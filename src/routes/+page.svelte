@@ -45,8 +45,8 @@
 		initVimMode = mvImport.initVimMode;
 		if (window.location.hash.substring(1)) {
 			value = decompressFromBase64(window.location.hash.substring(1));
-			hasCheckedHash = true;
 		}
+        hasCheckedHash = true;
 	});
 
 	$effect.pre(() => {
@@ -96,7 +96,6 @@
 	}
 
 	$effect(() => {
-		console.log(editor)
 		if (editor) {
 			if (vimMode) {
 				vimInstance = initVimMode(editor, document.getElementById('statusBar'))
