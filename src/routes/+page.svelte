@@ -213,7 +213,7 @@
 					<button
 						id="kill"
                         title="Restarts the Python Service Worker"
-                        disabled={() => worker == undefined}
+                        disabled={worker == undefined}
 						onclick={() => {
 							lights = undefined;
 							stop(true);
