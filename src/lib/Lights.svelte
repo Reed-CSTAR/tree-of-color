@@ -9,14 +9,16 @@
 
 <div class="lights">
     {#if lights}
-        {#each Array(strips).fill(0).map((_, i) => i) as strip} 
-            {#each Array(lightCount).fill(0).map((_, i) => i) as light}
-                {@const r = lights[(strip * lightCount + light) * 3]}
-                {@const g = lights[(strip * lightCount + light) * 3 + 1]}
-                {@const b = lights[(strip * lightCount + light) * 3 + 2]}
+        {#each Array(strips).fill(0).map((_, i) => i) as strip}
+            <div class="strip">
+                {#each Array(lightCount).fill(0).map((_, i) => i) as light}
+                    {@const r = lights[(strip * lightCount + light) * 3]}
+                    {@const g = lights[(strip * lightCount + light) * 3 + 1]}
+                    {@const b = lights[(strip * lightCount + light) * 3 + 2]}
 
-                <div class="square" style="background-color: rgb({r}, {g}, {b})"></div>
-            {/each}
+                    <div class="square" style="background-color: rgb({r}, {g}, {b})"></div>
+                {/each}
+            </div>
         {/each}
     {/if}
 </div>
@@ -25,10 +27,19 @@
     .square {
         width: 10px;
         height: 10px;
+        border-radius: 50%;
+    }
+
+    .strip {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
     }
 
     .lights {
         display: flex;
         flex-wrap: wrap;
+        padding: 3rem;
+        margin: 1rem;
     }
 </style>

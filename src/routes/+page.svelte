@@ -135,8 +135,11 @@
 				<Lights {lights} />
 			</div>
 			<div class="toolbar">
-				<button onclick={run}>Run</button>
-				<button onclick={stop}>Stop</button>
+				<div class="buttons">
+					<button id="run" onclick={run}>Run</button>
+					<button id="stop" onclick={stop}>Stop</button>
+					<button id="console" onclick={() => alert("not implemented yet sry")}>Console</button>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -174,16 +177,34 @@
 			width: 100%;
 			display: flex;
 			padding: 0.5rem;
+			gap: 0.5rem;
 			
 			button {
 				padding: 0.5rem 1rem;
+				border-radius: 0.2rem;
+				font-size: 1.5rem;
+				font-weight: 300;
+				cursor: pointer;
+				border: none;
+
+				&#run {
+					background-color: #eaff96;
+				}
+				
+				&#stop {
+					background-color: rgba(195, 66, 63, 0.8);
+				}
+
+				&#console {
+					background-color: #5BC0EB;
+				}
 			}
 		}
 	}
 
 	header {
 		background-color: #1e1e1e;
-		opacity: 0.9;
+		border-bottom: 1px solid #252525;
 		padding: 0.75rem 0.5rem;
 		display: flex;
 		justify-content: space-between;
@@ -198,7 +219,7 @@
 	h1 {
 		margin: 0;
 		color: #d4d4d4;
-		font-weight: 800;
+		font-weight: 400;
 		margin-left: 0.5rem;
 	}
 
