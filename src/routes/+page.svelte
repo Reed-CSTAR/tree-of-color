@@ -15,7 +15,8 @@
 	const { decompressFromBase64, compressToBase64 } = lz
 
 	/** The current script */
-	let value = $state<string>(examples[0][1]);
+	let value = $state<string>(`# There are more examples at the top right dropdown! This one
+# is intended to only display solid green.\n` + examples[0][1]);
 	let hasCheckedHash = $state(false)
 
 	let example = $state<string>(examples[0][1]);

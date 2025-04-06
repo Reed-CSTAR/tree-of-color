@@ -1,5 +1,3 @@
-# There are more examples at the top right dropdown! This one
-# is intended to only display solid green.
 import treeofcolor
 from itertools import repeat
 
