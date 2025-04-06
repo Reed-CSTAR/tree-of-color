@@ -59,6 +59,17 @@
 		worker.onmessage = ({ data }) => {
 			console.log(data);
 			if (typeof data === 'object' && data !== null) {
+				if ("loaded" in data && data["loaded"]) {
+					status = 'started';
+				}
+
+				if ("error" in data) {
+					// TODO: pipe to console
+					if ("fatal" in data) {
+						status = 'fatal';
+					}
+				}
+				
 				if ("output" in data && data["output"] instanceof Uint8Array) {
 					lights = data["output"];
 				}
@@ -72,6 +83,7 @@
 	function stop() {
 		worker?.terminate();
 		cancelAnimationFrame(raf);
+		status = 'stopped';
 	}
 
 	$effect(() => {
@@ -208,7 +220,7 @@
 				}
 				
 				&#stop {
-					background-color: rgba(195, 66, 63, 0.8);
+					background-color: rgba(212, 66, 64, 0.8);
 				}
 
 				&#console {
