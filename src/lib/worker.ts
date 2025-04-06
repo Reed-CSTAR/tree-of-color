@@ -39,6 +39,8 @@ async function load(): Promise<PyodideInterface> {
 		}
 	});
 
+	pyodide.FS.writeFile('./treeofcolor.py', treeofcolorpy);
+
 	return pyodide;
 }
 

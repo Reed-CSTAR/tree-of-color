@@ -12,7 +12,9 @@
 
 	/** The current script */
 	let value = $state<string>(examples[0][1]);
-	let example = $state<string>(examples[0][1])
+	let example = $state<string>(examples[0][1]);
+
+	let status = $state<"stopped" | "starting" | "started" | "fatal">("stopped");
 	
 	/** Pyodide worker */
 	let worker: Worker | undefined;
@@ -36,13 +38,14 @@
 	onMount(async () => {
 		const mvImport = await import('monaco-vim');
 		initVimMode = mvImport.initVimMode;
-
-		value = window.localStorage.getItem("toc:content") ?? ""
 	});
 
-	$effect(() => window.localStorage.setItem("toc:content", value))
+	$effect(() => {
+		window.location.hash = "test"
+	})
 
 	async function run() {
+		status = "starting"
 		worker?.terminate();
 		worker = new PyodideWorker();
 		buffer = new SharedArrayBuffer(4);
@@ -140,6 +143,9 @@
 					<button id="stop" onclick={stop}>Stop</button>
 					<button id="console" onclick={() => alert("not implemented yet sry")}>Console</button>
 				</div>
+				<div class="status">
+					{status}
+				</div>
 			</div>
 		</div>
 	</main>
@@ -178,8 +184,18 @@
 			display: flex;
 			padding: 0.5rem;
 			gap: 0.5rem;
+			justify-content: space-between;
+			align-items: center;
+			background-color: #1e1e1e;
+			border-left: 1px solid #252525;
+
+			.status {
+				color: white;
+				margin-right: 0.5rem;
+				font-size: 1.5rem;
+			}
 			
-			button {
+			.buttons button {
 				padding: 0.5rem 1rem;
 				border-radius: 0.2rem;
 				font-size: 1.5rem;
