@@ -163,6 +163,7 @@
 					<button id="run" onclick={run}>Run</button>
 					<button id="stop" onclick={stop}>Stop</button>
 					<button id="console" onclick={() => alert("not implemented yet sry")}>Console</button>
+					<button id="clear" onclick={() => lights = undefined}>Clear Lights</button>
 				</div>
 				<div class="status">
 					{status}
@@ -223,17 +224,31 @@
 				font-weight: 300;
 				cursor: pointer;
 				border: none;
+				background: none;
+				color: white;
 
 				&#run {
-					background-color: #eaff96;
+					background-color: rgba(234, 255, 150, 0.2);
+					border-bottom: 2px solid rgb(234, 255, 150);
 				}
 				
 				&#stop {
-					background-color: rgba(212, 66, 64, 0.8);
+					background-color: rgba(212, 66, 64, 0.2);
+					border-bottom: 2px solid rgb(212, 66, 64);
 				}
 
 				&#console {
-					background-color: #5BC0EB;
+					background-color: rgba(0, 122, 204, 0.2);
+					border-bottom: 2px solid rgb(0, 122, 204);
+				}
+
+				&#clear {
+					background-color: rgba(44, 50, 54, 0.2);
+					border-bottom: 2px solid rgb(44, 50, 54);
+				}
+
+				&:hover {
+					filter: brightness(120%);
 				}
 			}
 		}

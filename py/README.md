@@ -1,4 +1,4 @@
-# Python Modlue
+# Python Module
 
 This defines a convenient wrapper for writing client code.
 
