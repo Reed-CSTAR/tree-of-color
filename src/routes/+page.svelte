@@ -19,7 +19,7 @@
 	/** The current script */
 	let value = $state<string>(
 		`# There are more examples at the top right dropdown! This one
-# is intended to only display solid green.\n` + examples[0][1]
+# is intended to only display solid green.\n` + examples[0][0]
 	);
 	let hasCheckedHash = $state(false);
 
