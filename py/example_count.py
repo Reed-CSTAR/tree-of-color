@@ -1,0 +1,30 @@
+import treeofcolor
+from itertools import chain, repeat
+
+class Animation:
+    def __init__(self):
+        self.count = 0
+
+    def _flip_state(self):
+        self.count = self.count + 1
+
+    def __call__(self):
+        self._flip_state()
+        orange = treeofcolor.Color(235, 125, 52)
+        gray = treeofcolor.Color(30, 30, 30)
+        bright_gray = treeofcolor.Color(180, 180, 180)
+
+        # We remove the first to characters
+        # to remove the 0b... prefix, and
+        # convert it to a list of strs "0"s and "1s".
+        # To make it prettier, we reverse it!
+        binary = reversed(list(bin(self.count)[2:]))
+    
+        return treeofcolor.Frame(chain(
+            [orange if b == "1" else bright_gray for b in binary],
+            repeat(gray)
+        ))
+
+if __name__ == '__main__':
+    animation = Animation()
+    treeofcolor.App(animation).run()
