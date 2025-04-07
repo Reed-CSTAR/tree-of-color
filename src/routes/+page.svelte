@@ -11,6 +11,8 @@
 	import lz from 'lz-string';
     import toast from 'svelte-french-toast';
 	import Editor from '$lib/Editor.svelte';
+	import Select from '$lib/Select.svelte';
+	import Terminal from '$lib/Terminal.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -21,7 +23,7 @@
 	);
 	let hasCheckedHash = $state(false);
 
-	let example = $state<string>(examples[0][1]);
+	let example = $state<string>(examples[0][0]);
 
 	let status = $state<'stopped' | 'starting' | 'started' | 'fatal'>('stopped');
 
@@ -40,6 +42,8 @@
 	let lastFrameTime: number;
 
 	let vimMode = $state(false);
+	let terminalMode = $state(false);
+	let consoleOutput = $state("")
 
 	onMount(async () => {
 		if (window.location.hash.substring(1)) {
@@ -82,7 +86,7 @@
 				}
 
 				if ('error' in data) {
-					// TODO: pipe to console
+					consoleOutput += data.error;
 					if ('fatal' in data) {
 						status = 'fatal';
 					}
@@ -133,11 +137,11 @@
 			<h1>Tree of Color</h1>
 		</div>
 		<div class="right">
-			<select bind:value={example} onchange={() => (value = example)}>
-				{#each examples as [name, content]}
-					<option value={content}>{name}</option>
-				{/each}
-			</select>
+			<Select
+				bind:value={example}
+				onchange={() => (value = example)}
+				options={examples}
+			/>
 			<div class="iconAlign icon">
 				<button class="smallIcon" title="Share" onclick={() => {
                     navigator.clipboard.writeText(location.href);
@@ -160,10 +164,14 @@
 	</header>
 	<main>
 		<div class="editor">
-			<Editor {vimMode} {value} />
+			<Editor {vimMode} bind:value />
 		</div>
 		<div class="vis">
-            <Lights {lights} />
+			{#if terminalMode}
+				<Terminal output={consoleOutput} />
+			{:else}
+            	<Lights {lights} />
+			{/if}
 			<div class="toolbar">
 				<div class="buttons">
 					<button
@@ -178,7 +186,7 @@
 						id="stop"
 						onclick={() => stop(false)}>Stop</button
 					>
-					<button id="console" onclick={() => alert('not implemented yet sry')}>Console</button>
+					<button id="console" onclick={() => terminalMode = !terminalMode}>Console</button>
 					<button
                         id="clear"
                         onclick={() => (lights = undefined)}
@@ -368,6 +376,8 @@
 
 	.right {
 		display: flex;
+		align-items: center;
+		justify-content: center;
 		gap: 0.25rem;
 	}
 </style>

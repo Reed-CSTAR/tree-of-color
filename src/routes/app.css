@@ -5,6 +5,6 @@ select {
 	font-family: 'Fira Sans', sans-serif;
 }
 
-* {
+*, *::before, *::after {
 	box-sizing: border-box;
 }

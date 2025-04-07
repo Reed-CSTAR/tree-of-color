@@ -8,7 +8,7 @@
         vimMode: boolean;
     }
 
-    let { value, vimMode }: Props = $props()
+    let { value = $bindable(), vimMode }: Props = $props()
 
 	let editor = $state<MonacoE.editor.IStandaloneCodeEditor>();
 
