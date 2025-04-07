@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Monaco from 'svelte-monaco/Monaco.svelte';
-	import type MonacoE from 'monaco-editor';
 	import PyodideWorker from '../lib/worker?worker';
 	import Lights from '$lib/Lights.svelte';
 	import { onMount } from 'svelte';
@@ -12,6 +10,7 @@
 	import { examples } from '$lib/examples';
 	import lz from 'lz-string';
     import toast from 'svelte-french-toast';
+	import Editor from '$lib/Editor.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -40,15 +39,9 @@
 
 	let lastFrameTime: number;
 
-	let editor = $state<MonacoE.editor.IStandaloneCodeEditor>();
 	let vimMode = $state(false);
 
-	let initVimMode: any;
-	let vimInstance: any;
-
 	onMount(async () => {
-		const mvImport = await import('monaco-vim');
-		initVimMode = mvImport.initVimMode;
 		if (window.location.hash.substring(1)) {
 			value = decompressFromBase64(window.location.hash.substring(1));
 		}
@@ -119,16 +112,6 @@
 		status = 'stopped';
 	}
 
-	$effect(() => {
-		if (editor) {
-			if (vimMode) {
-				vimInstance = initVimMode(editor, document.getElementById('statusBar'));
-			} else {
-				vimInstance?.dispose();
-			}
-		}
-	});
-
 	function frame() {
 		if (Date.now() - lastFrameTime > 1000) {
 			requestWorkerFrame();
@@ -177,15 +160,7 @@
 	</header>
 	<main>
 		<div class="editor">
-			<Monaco
-				options={{ language: 'python', automaticLayout: true }}
-				theme="vs-dark"
-				on:ready={async ({ detail }) => {
-					editor = detail;
-				}}
-				bind:value
-			/>
-			<div id="statusBar" class:vimMode></div>
+			<Editor {vimMode} {value} />
 		</div>
 		<div class="vis">
             <Lights {lights} />
@@ -373,19 +348,6 @@
 		padding-top: 1rem;
 		background-color: #1e1e1e;
 		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1px);
-	}
-
-	.editor:has(> .vimMode) {
-		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1px - 1.5rem);
-	}
-
-	.vimMode {
-		background-color: #1e1e1e;
-		color: #d4d4d4;
-		width: 100%;
-		height: 1.5rem;
-		display: flex;
-		align-items: center;
 	}
 
 	.smallIcon {
