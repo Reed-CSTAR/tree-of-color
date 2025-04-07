@@ -124,17 +124,29 @@
 
 		raf = requestAnimationFrame(frame);
 	}
+
+	const colors: string[] = [
+		"#28965A",
+		"#FEFAE0",
+		"#DDA15E",
+	]
+
+	let iconColor = $state(0)
 </script>
 
 <div class="container">
 	<header>
 		<div class="left">
 			<div class="logoContainer">
-                <div class="logo">
-                    <Icon icon={tree} color="white" width="100%" height="100%" />
-                </div>
+                <button class="logo" onclick={() => iconColor = (iconColor + 1) % colors.length}>
+                    <Icon
+						icon={tree} color={colors[iconColor]} width="100%" height="100%"
+					/>
+				</button>
             </div>
-			<h1>Tree of Color</h1>
+			<h1>
+				Tree of Color
+			</h1>
 		</div>
 		<div class="right">
 			<Select
@@ -336,6 +348,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+			background-color: transparent;
+			padding: 0;
+			border: none;
+			cursor: pointer;
 
             .logo {
                 width: calc(68px - 4px - 1rem);
