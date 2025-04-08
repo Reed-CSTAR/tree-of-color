@@ -198,7 +198,13 @@
 						id="stop"
 						onclick={() => stop(false)}>Stop</button
 					>
-					<button id="console" onclick={() => terminalMode = !terminalMode}>Console</button>
+					<button id="console" onclick={() => terminalMode = !terminalMode}>
+						{#if terminalMode}
+							Lights
+						{:else}
+							Terminal
+						{/if}
+					</button>
 					<button
                         id="clear"
                         onclick={() => (lights = undefined)}
