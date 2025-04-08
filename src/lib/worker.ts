@@ -24,7 +24,7 @@ const stdin: InFuncType = () => {
 
 async function load(): Promise<PyodideInterface> {
 	const pyodide = await loadPyodide({
-		indexURL: '/tree-of-color/artifacts/pyodide'
+		indexURL: '/tree-of-color/artifacts/pyodide',
 	});
 
 	let buffer = new Uint8Array(1500);
@@ -33,6 +33,7 @@ async function load(): Promise<PyodideInterface> {
 	pyodide.setStdin({ stdin });
     pyodide.setInterruptBuffer(interrupt)
 	pyodide.setStdout({
+		isatty: true,
 		raw(code) {
 			buffer[idx] = code;
 			idx++;
