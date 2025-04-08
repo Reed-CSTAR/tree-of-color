@@ -52,7 +52,8 @@ class App:
             req = input()
             
             # this is for the js side: this stops our `stdin` handler from blocking
-            # the event loop in the worker thread
+            # the event loop in the worker thread. this isn't required if you are
+            # writing a custom implementation of this - you only need to poll `frame`
             if req == 'wait':
                 continue
 
