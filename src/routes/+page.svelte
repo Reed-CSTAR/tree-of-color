@@ -231,7 +231,10 @@
 				<div class="status">
                     {#if status === 'fatal'}
                         <!-- we give a nicer name to fatal errors to discourage killing -->
-					    halted
+					    <div class="errorWarning">
+							<span class="title">error!</span>
+							<span class="desc">(see terminal)</span>
+						</div>
                     {:else}
                         {status}
                     {/if}
@@ -401,5 +404,17 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.25rem;
+	}
+
+	.errorWarning {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		align-items: center;
+		font-size: 1rem;
+
+		.title {
+			font-size: 1.5rem;
+		}
 	}
 </style>
