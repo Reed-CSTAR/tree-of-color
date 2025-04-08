@@ -32,7 +32,7 @@ async function load(): Promise<PyodideInterface> {
 
 	pyodide.setStdin({ stdin });
     pyodide.setInterruptBuffer(interrupt)
-	pyodide.setStdout({
+	pyodide.setStderr({
 		isatty: true,
 		raw(code) {
 			buffer[idx] = code;
@@ -45,9 +45,9 @@ async function load(): Promise<PyodideInterface> {
 		}
 	});
 
-	pyodide.setStderr({
-		raw(code) {
-			self.postMessage({ output: code, id: gid });
+	pyodide.setStdout({
+		batched(code) {
+			self.postMessage({ output: code, id: gid, stdout: true });
 		}
 	});
 

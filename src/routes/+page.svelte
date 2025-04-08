@@ -92,8 +92,12 @@
 					}
 				}
 
-				if ('output' in data && data['output'] instanceof Uint8Array) {
-					lights = data['output'];
+				if ('output' in data) {
+					if (data['output'] instanceof Uint8Array) {
+						lights = data['output'];
+					} else if (typeof data['output'] === 'string') {
+						consoleOutput += data.output + "\n";
+					}
 				}
 			}
 		};

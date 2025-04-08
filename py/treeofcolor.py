@@ -59,7 +59,7 @@ class App:
             if req != 'frame':
                 raise ValueError(f'Server sent malformed request "{req}".')
 
-            sys.stdout.buffer.write(self.callback().serialize())
+            sys.stderr.buffer.write(self.callback().serialize())
 
 def _require_byte(x: int):
     if x < 0 or x > 255:
