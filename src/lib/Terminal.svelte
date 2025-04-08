@@ -16,7 +16,7 @@
         if (!terminalDiv) return;
         const { Terminal } = await import('@xterm/xterm');
         const { FitAddon } = await import('@xterm/addon-fit');
-        term = new Terminal();
+        term = new Terminal({ convertEol: true });
         const fitAddon = new FitAddon()
         term.open(terminalDiv);
         term.loadAddon(fitAddon)
