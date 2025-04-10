@@ -23,6 +23,9 @@ class Color:
     def serialize(self) -> bytes:
         return bytes([self.r, self.g, self.b])
 
+def Rgb(r: int, g: int, b: int):
+    return Color(r, g, b)
+
 class Frame:
     _colors: list[Color]
 

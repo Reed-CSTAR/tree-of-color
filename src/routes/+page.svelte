@@ -226,13 +226,6 @@
 							stop(true);
 						}}>Kill</button
 					>
-					<button
-                        disabled={status === 'stopped' || status === 'fatal'}
-						id="animate"
-						onclick={() => {
-							requestWorkerFrame();
-						}}>Animate</button
-					>
 				</div>
 				<div class="status">
                     <Spinner active={status === 'starting'} />
@@ -342,11 +335,6 @@
                 &#kill {
 					background-color: rgba(59, 0, 0, 0.2);
 					border-bottom: 2px solid rgb(59, 0, 0);
-				}
-
-                &#animate {
-					background-color: rgba(134, 0, 175, 0.2);
-					border-bottom: 2px solid rgb(134, 0, 175);
 				}
 
 				&:hover:not(:disabled) {

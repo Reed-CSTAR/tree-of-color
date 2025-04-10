@@ -27,15 +27,13 @@
 	{:else}
 		<h2>it is up to you to control these lights.</h2>
 		<p>
-			Check out the examples, press Run to run the Python <br />
+			Check out the examples at the top right, press Run to run the Python <br />
 			script (and see some colors!), and press Stop to stop the script.
 		</p>
 		<p>
 			<b>Note:</b> Lights are not as they appear, since they are on a tree. <br />
-			There are {strips} continuous strips with no guaranteed layout.
-		</p>
-		<p>
-			<i>Don't want to use Python?</i> <a href="https://github.com/Reed-CSTAR/tree-of-color/blob/main/py/README.md">The program spec is here</a>.
+			There are {strips} continuous strips, 100 lights each, and <br />
+			with no guaranteed layout.
 		</p>
 	{/if}
 </div>
