@@ -29,7 +29,7 @@
 	let status = $state<'stopped' | 'starting' | 'started' | 'fatal'>('stopped');
 
 	/** Pyodide worker */
-	let worker: Worker | undefined;
+	let worker = $state<Worker | undefined>();
 	/** The global id of our current pyodide worker as a sanity check */
 	let id = $state<number>(0);
 	/** Synchronises frames between us and the web worker. */
@@ -51,6 +51,7 @@
 			value = decompressFromBase64(window.location.hash.substring(1));
 		}
 		hasCheckedHash = true;
+		worker = new PyodideWorker();
 	});
 
 	$effect.pre(() => {
