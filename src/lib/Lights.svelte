@@ -8,7 +8,7 @@
 
 	interface Props {
 		lights: Uint8Array | undefined;
-		frameCount: number;
+		frameCount?: number;
 	}
 
 	let { lights, frameCount }: Props = $props();
@@ -16,7 +16,12 @@
 
 <div class="lightsWrapper">
 	<PaneHeader onclear={() => lights = undefined}>
-		Lights (frame {frameCount})
+		Lights
+		{#if frameCount}
+			(frame {frameCount})
+		{:else if lights !== undefined}
+			(nothing is running!)
+		{/if}
 	</PaneHeader>
 	<div class="lights">
 		{#if lights}
@@ -38,10 +43,14 @@
 		{:else}
 			<h2>lets play with lights!</h2>
 			<p>
-				Check out the examples at the top right, press Run to run the Python <br />
-				script (and see some colors!), and press Stop to stop the script. <br /><br />
+				Check out the examples at the top right, press
+				<!-- TODO: i love hardcoded colors! -->
+				<span style:color="rgb(234, 255, 150)">Run</span> to run the Python <br />
+				script (and see some colors!), and press
+				<span style:color="rgb(212, 66, 64)">Stop</span> to stop the script. <br /><br />
 	
-				The tree itself will have 5 strips with 100 LEDs each!
+				The tree itself will have 5 strips with 100 LEDs each. When you run <br />
+				the python code, each strip will be boxed in the visualization.
 			</p>
 		{/if}
 	</div>

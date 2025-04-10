@@ -204,7 +204,7 @@
 		</div>
 		<div class="vis">
 			<div class="visMain">
-				<Lights {lights} {frameCount} />
+				<Lights {lights} frameCount={status === 'started' ? frameCount : undefined} />
 				{#if terminalMode}
 					<Terminal output={consoleOutput} />
 				{/if}
@@ -235,7 +235,7 @@
 					<div class="gap"></div>
 					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
-							Hide Terminal
+							Hide
 						{:else}
 							Show Terminal
 						{/if}
