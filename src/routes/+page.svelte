@@ -204,6 +204,16 @@
 						id="stop"
 						onclick={() => stop(false)}>Stop</button
 					>
+					<button
+						id="kill"
+                        title="Restarts the Python Service Worker"
+                        disabled={worker == undefined}
+						onclick={() => {
+							lights = undefined;
+							stop(true);
+						}}>Kill</button
+					>
+					<div class="gap"></div>
 					<button id="console" onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
 							Lights
@@ -217,15 +227,6 @@
                         disabled={lights == undefined}
                         title="Clears off the current LED lights"
                     >Clear</button>
-					<button
-						id="kill"
-                        title="Restarts the Python Service Worker"
-                        disabled={worker == undefined}
-						onclick={() => {
-							lights = undefined;
-							stop(true);
-						}}>Kill</button
-					>
 				</div>
 				<div class="status">
                     <Spinner active={status === 'starting'} />
@@ -259,6 +260,11 @@
 		height: 100vh;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.gap {
+		display: inline-block;
+		margin-left: 1rem;
 	}
 
 	main {
@@ -307,11 +313,6 @@
 				background: none;
 				color: white;
 
-				&:disabled {
-					cursor: not-allowed;
-					opacity: 0.5;
-				}
-
 				&#run {
 					background-color: rgba(234, 255, 150, 0.2);
 					border-bottom: 2px solid rgb(234, 255, 150);
@@ -335,6 +336,13 @@
                 &#kill {
 					background-color: rgba(59, 0, 0, 0.2);
 					border-bottom: 2px solid rgb(59, 0, 0);
+				}
+
+				&:disabled {
+					cursor: not-allowed;
+					opacity: 0.2;
+					background-color: rgba(50, 50, 50, 0.2) !important;
+					border-bottom: 2px solid rgb(50, 50, 50) !important;
 				}
 
 				&:hover:not(:disabled) {
