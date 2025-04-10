@@ -3,9 +3,10 @@
 
     interface Props {
         delay?: number;
+        active: boolean;
     }
 
-    let { delay = 100 }: Props = $props();
+    let { delay = 100, active }: Props = $props();
 
     const spinner = "⣾⣽⣻⢿⡿⣟⣯⣷".split("");
 
@@ -31,4 +32,16 @@
     }
 </script>
 
-<span>{spinner[spinnerIdx]}</span>
+<span class:active>
+    {#if active}
+        {spinner[spinnerIdx]}
+    {:else}
+        ⣿
+    {/if}
+</span>
+
+<style>
+    span:not(.active) {
+        color: gray;
+    }
+</style>

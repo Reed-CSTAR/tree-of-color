@@ -235,17 +235,18 @@
 					>
 				</div>
 				<div class="status">
-                    {#if status === 'fatal'}
-                        <!-- we give a nicer name to fatal errors to discourage killing -->
-					    <div class="errorWarning">
-							<span class="title">error!</span>
-							<span class="desc">(see terminal)</span>
-						</div>
-                    {:else if status === 'starting'}
-						<Spinner /> starting
-					{:else}
-                        {status}
-                    {/if}
+                    <Spinner active={status === 'starting'} />
+					<div class="innerStatus">
+						{#if status === 'fatal'}
+							<!-- we give a nicer name to fatal errors to discourage killing -->
+							<div class="errorWarning">
+								<span class="title">error!</span>
+								<span class="desc">(see terminal)</span>
+							</div>
+						{:else}
+							{status}
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -294,6 +295,13 @@
 				color: white;
 				margin-right: 0.5rem;
 				font-size: 1.5rem;
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+
+				.innerStatus {
+					display: inline;
+				}
 			}
 
 			.buttons button {
