@@ -37,10 +37,11 @@ async function load(): Promise<PyodideInterface> {
 	});
 
 	let buffer = new Uint8Array(1500);
-	let idx = 0;
 
 	pyodide.setStdin({ stdin });
     pyodide.setInterruptBuffer(interrupt)
+
+	let idx = 0;
 	pyodide.setStderr({
 		isatty: true,
 		raw(code) {

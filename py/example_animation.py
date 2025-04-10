@@ -18,6 +18,8 @@ class Animation:
         self._flip_state()
         
         # these are RGB colors!
+        # you can also use Hex: try
+        # treeofcolor.Hex("#4287f5")
         first_color = treeofcolor.Rgb(16, 255, 203)
         second_color = treeofcolor.Rgb(247, 85, 144)
     
