@@ -13,6 +13,7 @@
 	import Editor from '$lib/Editor.svelte';
 	import Select from '$lib/Select.svelte';
 	import Terminal from '$lib/Terminal.svelte';
+	import Spinner from '$lib/Spinner.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -239,7 +240,9 @@
 							<span class="title">error!</span>
 							<span class="desc">(see terminal)</span>
 						</div>
-                    {:else}
+                    {:else if status === 'starting'}
+						<Spinner /> starting
+					{:else}
                         {status}
                     {/if}
 				</div>
@@ -337,7 +340,7 @@
 					border-bottom: 2px solid rgb(134, 0, 175);
 				}
 
-				&:hover {
+				&:hover:not(:disabled) {
 					filter: brightness(120%);
 				}
 			}
