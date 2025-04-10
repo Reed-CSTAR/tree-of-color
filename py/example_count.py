@@ -20,6 +20,8 @@ class Animation:
         # To make it prettier, we reverse it!
         binary = reversed(list(bin(self.count)[2:]))
     
+        # itertools `chain` allows us to combine two iterators in succession.
+        # https://docs.python.org/3/library/itertools.html#itertools.chain
         return treeofcolor.Frame(chain(
             [orange if b == "1" else bright_gray for b in binary],
             repeat(gray)

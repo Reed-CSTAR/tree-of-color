@@ -14,6 +14,9 @@ class Animation:
         moss = treeofcolor.Color(100, 155, 100)
     
         if self.left:
+            # the `cycle` itertools function is like
+            # `repeat`, but it goes between two values:
+            # https://docs.python.org/3/library/itertools.html#itertools.cycle
             return treeofcolor.Frame(cycle([green, moss]))
         else:
             return treeofcolor.Frame(cycle([moss, green]))
