@@ -59,11 +59,13 @@ class App:
             
             # this is for the js side: this stops our `stdin` handler from blocking
             # the event loop in the worker thread. this isn't required if you are
-            # writing a custom implementation of this - you only need to poll `frame`
+            # writing a custom implementation of this - you only need to poll `frame`.
             if req == 'wait':
                 continue
                 
-            # this is _also_ for the js side, allowing us to propagate up a custom error
+            # this is _also_ for the js side, allowing us to propagate up a custom error.
+            # fun fact: if you throw an error with this exact format, it will hide the error!
+            # though this would not be great for you.
             if req == 'throw':
                 raise RuntimeError("⋆Intentionally thrown error.⋆")
 

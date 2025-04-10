@@ -106,10 +106,22 @@
 				}
 
 				if ('error' in data) {
-					consoleOutput += data.error;
 					if ('fatal' in data) {
+						// from treeofcolor.py
+						
+						// it seems redundant to check for `RuntimeError: `,
+						// but it saves us trouble if we accidentally catch
+						// line info from the file without this error
+						// actually being thrown
+						if (data.error.includes("RuntimeError: ⋆Intentionally thrown error.⋆")) {
+							status = 'stopped';
+							return;
+						}
+
 						status = 'fatal';
 					}
+
+					consoleOutput += data.error;
 				}
 
 				if ('output' in data) {

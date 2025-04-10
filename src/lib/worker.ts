@@ -1,25 +1,32 @@
 import { loadPyodide, type PyodideInterface } from 'pyodide';
 import treeofcolorpy from '../../py/treeofcolor.py?raw';
 
+// global identifier for the currently running process.
+// it's quite useful for debugging!
 let gid: number;
-let gbuffer: SharedArrayBuffer;
-let interrupt = new SharedArrayBuffer(1)
 
-let running = false;
+// the global buffer shared by the main thread,
+// allowing them to send frame requests
+let gbuffer: SharedArrayBuffer;
+
+let interrupt = new SharedArrayBuffer(1)
 
 /** From pyodide */
 type InFuncType = () => null | undefined | string | ArrayBuffer | Uint8Array | number;
+
 const stdin: InFuncType = () => {
     // we add a timeout and use `wait` to allow processing of other tasks
     // (e.g. worker messages) in the event loop
     if (Atomics.wait(new Int32Array(gbuffer), 0, 0, 50) === 'timed-out') {
         if ((new Uint8Array(interrupt))[0] != 0) {
-            throw "interrupted"
+            return 'throw\n';
         }
         return 'wait\n';
     }
 
-	self.postMessage({ receivedFrame: true })
+	// allows us to accurately count frames on the client side (some are dropped)
+	// during worker initialiaztion
+	self.postMessage({ receivedFrame: true });
 
     return 'frame\n';
 }
@@ -83,14 +90,11 @@ self.addEventListener("message", async (event) => {
 	gbuffer = buffer;
 
 	try {
-		running = true;
 		const result = await pyodide.runPythonAsync(python);
-		running = false;
 		self.postMessage({ output: result, id: gid, final: true });
 	} catch (error) {
 		if (typeof error === 'object' && error !== null && 'message' in error) {
 			self.postMessage({ error: error.message, id, fatal: true });
 		}
-		running = false;
 	}
 });
