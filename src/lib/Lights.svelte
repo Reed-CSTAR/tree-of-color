@@ -88,7 +88,7 @@
 	.lights {
 		display: flex;
 		flex-wrap: wrap;
-		padding: 2rem;
+		padding: 1rem;
 		background-color: #121212;
 		justify-content: center;
 		flex-direction: column;
@@ -96,8 +96,13 @@
 		color: white;
 		height: 100%;
 
+		h2 {
+			margin-top: 0;
+		}
+
 		p {
 			text-align: center;
+			margin-bottom: 0;
 		}
 
 		a {
