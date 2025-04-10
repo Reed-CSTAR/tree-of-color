@@ -145,7 +145,7 @@
 	function stop(hard = false) {
 		if (hard) {
 			worker?.terminate();
-			worker = undefined;
+			worker = new PyodideWorker();
 			status = 'stopped';
 		} else {
             (new Uint8Array(interruptBuffer))[0] = 2;
