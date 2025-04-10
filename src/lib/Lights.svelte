@@ -4,6 +4,8 @@
 </script>
 
 <script lang="ts">
+	import Email from "./Email.svelte";
+
 	import PaneHeader from "./PaneHeader.svelte";
 
 	interface Props {
@@ -50,7 +52,10 @@
 				<span style:color="rgb(212, 66, 64)">Stop</span> to stop the script. <br /><br />
 	
 				The tree itself will have 5 strips with 100 LEDs each. When you run <br />
-				the python code, each strip will be boxed in the visualization.
+				the python code, each strip will be boxed in the visualization. <br /><br />
+
+				Once you are ready to share your creation, or have questions, <br />email us:
+				<Email />
 			</p>
 		{/if}
 	</div>
