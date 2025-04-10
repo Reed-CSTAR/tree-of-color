@@ -27,7 +27,8 @@
 
 	let example = $state<string>(examples[0][0]);
 
-	let status = $state<'stopped' | 'starting' | 'started' | 'fatal'>('stopped');
+	let status = $state<'stopped' | 'starting' | 'started' | 'fatal' | 'stopping'>('stopped');
+	let lastStopAttempt = $state(new Date().getTime())
 
 	/** Pyodide worker */
 	let worker = $state<Worker | undefined>();
@@ -145,11 +146,13 @@
 		if (hard) {
 			worker?.terminate();
 			worker = undefined;
+			status = 'stopped';
 		} else {
             (new Uint8Array(interruptBuffer))[0] = 2;
+			status = 'stopping';
+			lastStopAttempt = new Date().getTime();
 		}
 		cancelAnimationFrame(raf);
-		status = 'stopped';
 	}
 
 	function frame() {
@@ -254,7 +257,7 @@
 					</Button>
 				</div>
 				<div class="status">
-                    <Spinner active={status === 'starting'} />
+                    <Spinner active={status === 'starting' || status === 'stopping'} />
 					<div class="innerStatus">
 						{#if status === 'fatal'}
 							<!-- we give a nicer name to fatal errors to discourage killing -->
@@ -262,6 +265,9 @@
 								<span class="title">error!</span>
 								<span class="desc">(see terminal)</span>
 							</div>
+						{:else if status === 'stopping'}
+							<!-- TODO: ask to Kill if stopping for too long with `lastStopAttempt` -->
+							stopping
 						{:else}
 							{status}
 						{/if}
