@@ -12,7 +12,7 @@ from itertools import repeat
 
 if __name__ == '__main__':
     # sets color using RGB
-    color = treeofcolor.Rgb(0, 255, 0)
+    color = treeofcolor.rgb(0, 255, 0)
 
     def frame_producer():
         # want to know about this? read above!

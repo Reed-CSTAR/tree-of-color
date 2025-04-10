@@ -23,10 +23,10 @@ class Color:
     def serialize(self) -> bytes:
         return bytes([self.r, self.g, self.b])
 
-def Rgb(r: int, g: int, b: int):
+def rgb(r: int, g: int, b: int):
     return Color(r, g, b)
 
-def Hex(hex: str):
+def hex(hex: str):
     # from https://stackoverflow.com/a/29643643/7589775
     (r, g, b) = tuple(int(hex.lstrip("#")[i:i+2], 16) for i in (0, 2, 4))
     return Color(r, g, b)

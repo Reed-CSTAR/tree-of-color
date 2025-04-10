@@ -11,9 +11,9 @@ class Animation:
         self.count = self.count + 1
 
     def __call__(self):
-        active_color = treeofcolor.Rgb(235, 125, 52)
-        inactive_color = treeofcolor.Rgb(30, 30, 30)
-        nothing_color = treeofcolor.Rgb(180, 180, 180)
+        active_color = treeofcolor.rgb(235, 125, 52)
+        inactive_color = treeofcolor.rgb(30, 30, 30)
+        nothing_color = treeofcolor.rgb(180, 180, 180)
 
         # We remove the first to characters
         # to remove the 0b... prefix, and

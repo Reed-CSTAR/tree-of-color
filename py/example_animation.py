@@ -19,9 +19,9 @@ class Animation:
         
         # these are RGB colors!
         # you can also use Hex: try
-        # treeofcolor.Hex("#4287f5")
-        first_color = treeofcolor.Rgb(16, 255, 203)
-        second_color = treeofcolor.Rgb(247, 85, 144)
+        # treeofcolor.hex("#4287f5")
+        first_color = treeofcolor.rgb(16, 255, 203)
+        second_color = treeofcolor.rgb(247, 85, 144)
     
         if self.left:
             # read the top comment for info about itertools!
