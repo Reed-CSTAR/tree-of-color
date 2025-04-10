@@ -11,9 +11,9 @@ class Animation:
         self.count = self.count + 1
 
     def __call__(self):
-        orange = treeofcolor.Rgb(235, 125, 52)
-        gray = treeofcolor.Rgb(30, 30, 30)
-        bright_gray = treeofcolor.Rgb(180, 180, 180)
+        active_color = treeofcolor.Rgb(235, 125, 52)
+        inactive_color = treeofcolor.Rgb(30, 30, 30)
+        nothing_color = treeofcolor.Rgb(180, 180, 180)
 
         # We remove the first to characters
         # to remove the 0b... prefix, and
@@ -28,8 +28,8 @@ class Animation:
         # itertools `chain` allows us to combine two iterators in succession.
         # https://docs.python.org/3/library/itertools.html#itertools.chain
         return treeofcolor.Frame(chain(
-            [orange if b == "1" else bright_gray for b in binary],
-            repeat(gray)
+            [active_color if b == "1" else nothing_color for b in binary],
+            repeat(inactive_color)
         ))
 
 if __name__ == '__main__':

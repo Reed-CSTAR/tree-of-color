@@ -18,14 +18,14 @@ class Animation:
         self._flip_state()
         
         # these are RGB colors!
-        firstColor = treeofcolor.Rgb(16, 255, 203)
-        secondColor = treeofcolor.Rgb(247, 85, 144)
+        first_color = treeofcolor.Rgb(16, 255, 203)
+        second_color = treeofcolor.Rgb(247, 85, 144)
     
         if self.left:
             # read the top comment for info about itertools!
-            return treeofcolor.Frame(cycle([firstColor, secondColor]))
+            return treeofcolor.Frame(cycle([first_color, second_color]))
         else:
-            return treeofcolor.Frame(cycle([secondColor, firstColor]))
+            return treeofcolor.Frame(cycle([second_color, first_color]))
 
 if __name__ == '__main__':
     animation = Animation()
