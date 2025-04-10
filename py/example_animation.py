@@ -1,6 +1,6 @@
-# There are more examples at the top right dropdown! This one
-# is intended to only display solid green.
+# this is our custom library!
 import treeofcolor
+
 from itertools import cycle
 
 # the `cycle` itertools function is like

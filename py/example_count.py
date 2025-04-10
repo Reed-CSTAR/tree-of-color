@@ -1,4 +1,6 @@
+# this is our custom library!
 import treeofcolor
+
 from itertools import chain, repeat
 
 class Animation:
