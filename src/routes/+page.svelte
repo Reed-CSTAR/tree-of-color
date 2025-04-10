@@ -244,6 +244,7 @@
                         disabled={worker == undefined}
 						onclick={() => {
 							lights = undefined;
+							toast.success("Killing & restarting Python daemon!")
 							stop(true);
 						}}>Kill</Button
 					>
