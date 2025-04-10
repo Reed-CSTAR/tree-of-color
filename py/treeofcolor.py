@@ -43,6 +43,9 @@ class Frame:
 @dataclass
 class App:
     callback: Callable[[], Frame]
+    frame_ratio: int = 1
+
+    _current_frame: int = 0
 
     def run(self):
         try:
@@ -59,11 +62,18 @@ class App:
             # writing a custom implementation of this - you only need to poll `frame`
             if req == 'wait':
                 continue
+                
+            # this is _also_ for the js side, allowing us to propagate up a custom error
+            if req == 'throw':
+                raise RuntimeError("⋆Intentionally thrown error.⋆")
 
             if req != 'frame':
                 raise ValueError(f'Server sent malformed request "{req}".')
 
-            sys.stderr.buffer.write(self.callback().serialize())
+            if self._current_frame % self.frame_ratio == 0:
+                sys.stderr.buffer.write(self.callback().serialize())
+            
+            self._current_frame = self._current_frame + 1
 
 def _require_byte(x: int):
     if x < 0 or x > 255:

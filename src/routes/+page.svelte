@@ -85,7 +85,9 @@
 			if (typeof data === 'object' && data !== null) {
 				if ('loaded' in data && data['loaded'] && data["interrupt"]) {
 					status = 'started';
-                    interruptBuffer = data["interrupt"]
+                    interruptBuffer = data["interrupt"];
+
+					lastFrameTime = 0;
 				}
 
 				if ('error' in data) {

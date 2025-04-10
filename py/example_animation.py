@@ -29,4 +29,10 @@ class Animation:
 
 if __name__ == '__main__':
     animation = Animation()
-    treeofcolor.App(animation).run()
+
+    # we set "frame_ratio" to 5, as the lights
+    # are updated every 200ms: we do 1 animation step
+    # for every 5 passing frames, so we move at one frame every second.
+
+    # note: the preview will immediately request a frame without hesitation!
+    treeofcolor.App(animation, frame_ratio=5).run()
