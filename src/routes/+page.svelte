@@ -93,7 +93,7 @@
 						firstFrame = false;
 						return;
 					}
-					
+
 					frameCount++;
 					return;
 				}
@@ -235,9 +235,9 @@
 					<div class="gap"></div>
 					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
-							Lights
+							Hide Terminal
 						{:else}
-							Terminal
+							Show Terminal
 						{/if}
 					</Button>
 				</div>
