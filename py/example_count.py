@@ -10,9 +10,9 @@ class Animation:
 
     def __call__(self):
         self._flip_state()
-        orange = treeofcolor.Color(235, 125, 52)
-        gray = treeofcolor.Color(30, 30, 30)
-        bright_gray = treeofcolor.Color(180, 180, 180)
+        orange = treeofcolor.Rgb(235, 125, 52)
+        gray = treeofcolor.Rgb(30, 30, 30)
+        bright_gray = treeofcolor.Rgb(180, 180, 180)
 
         # We remove the first to characters
         # to remove the 0b... prefix, and
