@@ -3,6 +3,7 @@
     import '@xterm/xterm/css/xterm.css'
     import type { Terminal } from "@xterm/xterm";
 	import type { FitAddon } from "@xterm/addon-fit";
+	import PaneHeader from "./PaneHeader.svelte";
 
     interface Props {
         output: string;
@@ -37,12 +38,33 @@
 
 <svelte:window onresize={() => fitAddon?.fit()}></svelte:window>
 
-<div class="terminal" bind:this={terminalDiv}></div>
+<div class="terminalPane">
+    <PaneHeader onclear={() => term?.clear()}>Terminal</PaneHeader>
+    <div class="terminalWrap">
+        <div class="terminal" bind:this={terminalDiv}></div>
+    </div>
+</div>
 
 <style>
     .terminal {
         width: 100%;
-        height: 100%;
         background-color: black;
+    }
+
+    .terminalWrap {
+        overflow-y: scroll;
+        background-color: black;
+        height: 100%;
+        display: flex;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .terminalPane {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
     }
 </style>

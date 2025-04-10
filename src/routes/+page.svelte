@@ -14,6 +14,7 @@
 	import Select from '$lib/Select.svelte';
 	import Terminal from '$lib/Terminal.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import Button from '$lib/Button.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -185,48 +186,43 @@
 			<Editor {vimMode} bind:value />
 		</div>
 		<div class="vis">
-			{#if terminalMode}
-				<Terminal output={consoleOutput} />
-			{:else}
-            	<Lights {lights} />
-			{/if}
+			<div class="visMain">
+				<Lights {lights} />
+				{#if terminalMode}
+					<Terminal output={consoleOutput} />
+				{/if}
+			</div>
 			<div class="toolbar">
 				<div class="buttons">
-					<button
+					<Button
 						disabled={status === 'started' || status === 'starting'}
-						id="run"
+						color={[234, 255, 150]}
 						onclick={() => run(false)}
 					>
 						Run
-					</button>
-					<button
+					</Button>
+					<Button
 						disabled={status === 'stopped' || status === 'fatal'}
-						id="stop"
-						onclick={() => stop(false)}>Stop</button
+						color={[212, 66, 64]}
+						onclick={() => stop(false)}>Stop</Button
 					>
-					<button
-						id="kill"
+					<Button
+						color={[59, 0, 0]}
                         title="Restarts the Python Service Worker"
                         disabled={worker == undefined}
 						onclick={() => {
 							lights = undefined;
 							stop(true);
-						}}>Kill</button
+						}}>Kill</Button
 					>
 					<div class="gap"></div>
-					<button id="console" onclick={() => terminalMode = !terminalMode}>
+					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
 							Lights
 						{:else}
 							Terminal
 						{/if}
-					</button>
-					<button
-                        id="clear"
-                        onclick={() => (lights = undefined)}
-                        disabled={lights == undefined}
-                        title="Clears off the current LED lights"
-                    >Clear</button>
+					</Button>
 				</div>
 				<div class="status">
                     <Spinner active={status === 'starting'} />
@@ -276,9 +272,17 @@
 
 	.vis {
 		width: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+
+		.visMain {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			flex: 1;
+		}
 
 		.toolbar {
 			width: 100%;
@@ -300,53 +304,6 @@
 
 				.innerStatus {
 					display: inline;
-				}
-			}
-
-			.buttons button {
-				padding: 0.5rem 1rem;
-				border-radius: 0.2rem;
-				font-size: 1.5rem;
-				font-weight: 300;
-				cursor: pointer;
-				border: none;
-				background: none;
-				color: white;
-
-				&#run {
-					background-color: rgba(234, 255, 150, 0.2);
-					border-bottom: 2px solid rgb(234, 255, 150);
-				}
-
-				&#stop {
-					background-color: rgba(212, 66, 64, 0.2);
-					border-bottom: 2px solid rgb(212, 66, 64);
-				}
-
-				&#console {
-					background-color: rgba(0, 122, 204, 0.2);
-					border-bottom: 2px solid rgb(0, 122, 204);
-				}
-
-				&#clear {
-					background-color: rgba(44, 50, 54, 0.2);
-					border-bottom: 2px solid rgb(44, 50, 54);
-				}
-
-                &#kill {
-					background-color: rgba(59, 0, 0, 0.2);
-					border-bottom: 2px solid rgb(59, 0, 0);
-				}
-
-				&:disabled {
-					cursor: not-allowed;
-					opacity: 0.2;
-					background-color: rgba(50, 50, 50, 0.2) !important;
-					border-bottom: 2px solid rgb(50, 50, 50) !important;
-				}
-
-				&:hover:not(:disabled) {
-					filter: brightness(120%);
 				}
 			}
 		}
