@@ -108,7 +108,7 @@
 				if ('error' in data) {
 					if ('fatal' in data) {
 						// from treeofcolor.py
-						
+
 						// it seems redundant to check for `RuntimeError: `,
 						// but it saves us trouble if we accidentally catch
 						// line info from the file without this error
@@ -247,7 +247,7 @@
 					<div class="gap"></div>
 					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
-							Hide
+							Hide Terminal
 						{:else}
 							Show Terminal
 						{/if}
