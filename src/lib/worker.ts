@@ -19,6 +19,8 @@ const stdin: InFuncType = () => {
         return 'wait\n';
     }
 
+	self.postMessage({ receivedFrame: true })
+
     return 'frame\n';
 }
 

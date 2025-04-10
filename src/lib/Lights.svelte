@@ -6,12 +6,17 @@
 <script lang="ts">
 	import PaneHeader from "./PaneHeader.svelte";
 
-	let { lights }: { lights: Uint8Array | undefined } = $props();
+	interface Props {
+		lights: Uint8Array | undefined;
+		frameCount: number;
+	}
+
+	let { lights, frameCount }: Props = $props();
 </script>
 
 <div class="lightsWrapper">
 	<PaneHeader onclear={() => lights = undefined}>
-		Lights
+		Lights (frame {frameCount})
 	</PaneHeader>
 	<div class="lights">
 		{#if lights}
@@ -62,6 +67,8 @@
 		margin-bottom: 0.5rem;
 		justify-content: start;
 		gap: 2px;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		padding: 0.25rem;
 	}
 
 	.lights {

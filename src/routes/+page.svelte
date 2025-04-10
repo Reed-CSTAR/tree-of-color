@@ -40,6 +40,8 @@
 	let raf: number;
 
 	let lights = $state<Uint8Array>();
+	let frameCount = $state(0);
+	let firstFrame = $state(true);
 
 	let lastFrameTime: number;
 
@@ -72,6 +74,9 @@
 			worker = new PyodideWorker();
 		}
 
+		frameCount = 0;
+		firstFrame = true;
+
 		buffer = new SharedArrayBuffer(4);
 
 		worker.postMessage({
@@ -83,6 +88,16 @@
 		worker.onmessage = ({ data }) => {
 			console.log(data);
 			if (typeof data === 'object' && data !== null) {
+				if ('receivedFrame' in data && data.receivedFrame) {
+					if (firstFrame) {
+						firstFrame = false;
+						return;
+					}
+					
+					frameCount++;
+					return;
+				}
+
 				if ('loaded' in data && data['loaded'] && data["interrupt"]) {
 					status = 'started';
                     interruptBuffer = data["interrupt"];
@@ -189,7 +204,7 @@
 		</div>
 		<div class="vis">
 			<div class="visMain">
-				<Lights {lights} />
+				<Lights {lights} {frameCount} />
 				{#if terminalMode}
 					<Terminal output={consoleOutput} />
 				{/if}
