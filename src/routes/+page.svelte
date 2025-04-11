@@ -156,7 +156,7 @@
 	}
 
 	function frame() {
-		if (Date.now() - lastFrameTime > 200) {
+		if (Date.now() - lastFrameTime > (1000 / 20)) {
 			requestWorkerFrame();
 			lastFrameTime = Date.now();
 		}
