@@ -18,8 +18,7 @@ class Animation:
         # We remove the first to characters
         # to remove the 0b... prefix, and
         # convert it to a list of strs "0"s and "1s".
-        # To make it prettier, we reverse it!
-        binary = reversed(list(bin(self.count)[2:]))
+        binary = list(bin(self.count)[2:])
 
         # this allows us to display 0 at the first frame,
         # since the animator immediately requests a frame!
