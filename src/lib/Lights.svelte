@@ -54,8 +54,8 @@
 				The tree itself will have 5 strips with 100 LEDs each. When you run <br />
 				the python code, each strip will be boxed in the visualization. <br /><br />
 
-				Once you are ready to share your creation, or have questions, <br />email us:
-				<Email />
+				Once you are ready to share your creation, or have questions, <br />email us
+				with your share link: <Email />
 			</p>
 		{/if}
 	</div>
