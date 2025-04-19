@@ -23,7 +23,7 @@
 	let example = $state<string>(examples[0].name);
 
 	let status = $state<'stopped' | 'starting' | 'started' | 'fatal' | 'stopping'>('stopped');
-	let lastStopAttempt = $state(new Date().getTime());
+	let lastStopAttempt = $state<number | undefined>(undefined);
 
 	/** Pyodide worker */
 	let worker = $state<Worker | undefined>();
@@ -63,6 +63,7 @@
 	}
 
 	async function run(refreshWorker = false) {
+		lastStopAttempt = undefined;
 		status = 'starting';
 
 		if (refreshWorker || !worker) {
@@ -145,28 +146,26 @@
 		} else {
 			new Uint8Array(interruptBuffer)[0] = 2;
 			status = 'stopping';
-			lastStopAttempt = new Date().getTime();
+			if (lastStopAttempt === undefined) lastStopAttempt = new Date().getTime();
 		}
 		cancelAnimationFrame(raf);
 	}
 
 	const frameTime = 1000 / 20;
 	function frame() {
-		if (Date.now() - lastFrameTime > frameTime) {
-			requestWorkerFrame();
-			lastFrameTime = Date.now();
-		}
-
 		raf = requestAnimationFrame(frame);
+		const now = Date.now();
+		const delta = now - lastFrameTime;
+		
+		if (delta > frameTime) {
+			requestWorkerFrame();
+			lastFrameTime = now - (delta % frameTime);
+		}
 	}
-
-	$effect(() => {
-		value = findExampleByName(example)!.content;
-	});
 </script>
 
 <div class="container">
-	<Header bind:example bind:vimMode />
+	<Header bind:example bind:vimMode onexamplechange={newExample => value = findExampleByName(newExample)!.content} />
 	<main>
 		<div class="editor">
 			<Editor {vimMode} bind:value />

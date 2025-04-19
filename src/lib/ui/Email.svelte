@@ -10,8 +10,6 @@
 
 {#if email !== undefined}
 	<a href="mailto:{email}">{email}</a>
-{:else}
-	<span>{email}</span>
 {/if}
 
 <style>

@@ -11,9 +11,10 @@
     interface Props {
         vimMode: boolean;
         example: string;
+        onexamplechange?: (newValue: string) => void;
     }
 
-    let { vimMode = $bindable(), example = $bindable() }: Props = $props();
+    let { vimMode = $bindable(), example = $bindable(), onexamplechange: onchange }: Props = $props();
 </script>
 
 <header>
@@ -24,7 +25,7 @@
         <h1>Tree of Color</h1>
     </div>
     <div class="right">
-        <Select bind:value={example} options={examples} />
+        <Select bind:value={example} options={examples} {onchange} />
         <div class="iconAlign">
             <button
                 class="smallIcon"

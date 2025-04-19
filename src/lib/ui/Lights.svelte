@@ -49,11 +49,17 @@
 				<!-- TODO: i love hardcoded colors! -->
 				<span style:color="rgb(234, 255, 150)">Run</span> to run the Python <br />
 				script (and see some colors!), and press
-				<span style:color="rgb(212, 66, 64)">Stop</span> to stop the script. <br /><br />
-
+				<span style:color="rgb(212, 66, 64)">Stop</span> to stop the script.
+			</p>
+			<p>
+				If your script takes too long to stop, <span style:color="rgb(209, 0, 0)">kill</span>
+				and <span style:color="rgb(234, 255, 150)">run</span> it again.
+			</p>
+			<p>
 				The tree itself will have 5 strips with 100 LEDs each. When you run <br />
-				the python code, each strip will be boxed in the visualization. <br /><br />
-
+				the python code, each strip will be boxed in the visualization.
+			</p>
+			<p>
 				Send your creation to us or ask questions at <Email /><br />(make sure to attach your share
 				link!)
 			</p>
