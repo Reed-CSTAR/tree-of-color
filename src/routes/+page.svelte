@@ -3,29 +3,29 @@
 	import Lights from '$lib/Lights.svelte';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
-	import tree from '@iconify-icons/iconoir/tree';
-	import share from '@iconify-icons/iconoir/share-android';
-	import github from '@iconify-icons/iconoir/github';
+	import share from '@iconify-icons/codicon/live-share';
+	import github from '@iconify-icons/codicon/github';
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
-	import { examples } from '$lib/examples';
+	import { examples, findExampleByName } from '$lib/examples';
 	import lz from 'lz-string';
     import toast from 'svelte-french-toast';
-	import Editor from '$lib/Editor.svelte';
+	import Editor from '$lib/components/Editor.svelte';
 	import Select from '$lib/Select.svelte';
 	import Terminal from '$lib/Terminal.svelte';
-	import Spinner from '$lib/Spinner.svelte';
-	import Button from '$lib/Button.svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import TreeIcon from '$lib/TreeIcon.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
 	/** The current script */
 	let value = $state<string>(
 		`# There are more examples at the top right dropdown! This one
-# is intended to only display solid green.\n` + examples[0][0]
+# is intended to only display solid green.\n` + examples[0].content
 	);
 	let hasCheckedHash = $state(false);
 
-	let example = $state<string>(examples[0][0]);
+	let example = $state<string>(examples[0].name);
 
 	let status = $state<'stopped' | 'starting' | 'started' | 'fatal' | 'stopping'>('stopped');
 	let lastStopAttempt = $state(new Date().getTime())
@@ -155,8 +155,9 @@
 		cancelAnimationFrame(raf);
 	}
 
+	const frameTime = 1000 / 20;
 	function frame() {
-		if (Date.now() - lastFrameTime > (1000 / 20)) {
+		if (Date.now() - lastFrameTime > frameTime) {
 			requestWorkerFrame();
 			lastFrameTime = Date.now();
 		}
@@ -164,24 +165,16 @@
 		raf = requestAnimationFrame(frame);
 	}
 
-	const colors: string[] = [
-		"#28965A",
-		"#FEFAE0",
-		"#DDA15E",
-	]
-
-	let iconColor = $state(0)
+	$effect(() => {
+		value = findExampleByName(example)!.content
+	})
 </script>
 
 <div class="container">
 	<header>
 		<div class="left">
 			<div class="logoContainer">
-                <button class="logo" onclick={() => iconColor = (iconColor + 1) % colors.length}>
-                    <Icon
-						icon={tree} color={colors[iconColor]} width="100%" height="100%"
-					/>
-				</button>
+                <TreeIcon />
             </div>
 			<h1>
 				Tree of Color
@@ -190,7 +183,6 @@
 		<div class="right">
 			<Select
 				bind:value={example}
-				onchange={() => (value = example)}
 				options={examples}
 			/>
 			<div class="iconAlign icon">
@@ -202,14 +194,14 @@
 				</button>
 			</div>
 			<div class="iconAlign icon">
-				<button class="smallIcon" onclick={() => (vimMode = !vimMode)} title="Vim Mode">
-					<Icon icon={vim} color="white" width="100%" height="100%" />
-				</button>
-			</div>
-			<div class="iconAlign icon">
 				<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" target="_blank">
 					<Icon icon={github} color="white" width="100%" height="100%" />
 				</a>
+			</div>
+			<div class="iconAlign icon">
+				<button class="smallIcon" onclick={() => (vimMode = !vimMode)} title="Vim Mode">
+					<Icon icon={vim} color="white" width="100%" height="100%" />
+				</button>
 			</div>
 		</div>
 	</header>
@@ -248,7 +240,6 @@
 							stop(true);
 						}}>Kill</Button
 					>
-					<div class="gap"></div>
 					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
 						{#if terminalMode}
 							Hide Terminal
@@ -292,11 +283,6 @@
 		height: 100vh;
 		display: flex;
 		flex-direction: column;
-	}
-
-	.gap {
-		display: inline-block;
-		margin-left: 1rem;
 	}
 
 	main {
@@ -356,22 +342,6 @@
 			display: flex;
 			align-items: center;
 		}
-
-        .logo {
-            height: calc(68px - 1rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-			background-color: transparent;
-			padding: 0;
-			border: none;
-			cursor: pointer;
-
-            .logo {
-                width: calc(68px - 4px - 1rem);
-                height: calc(68px - 4px - 1rem);
-            }
-        }
 
         h1 {
             margin: 0;

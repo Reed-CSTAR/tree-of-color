@@ -3,8 +3,7 @@ import treeofcolor
 
 from itertools import cycle
 
-# the `cycle` itertools function is like
-# `repeat`, but it goes between two values:
+# the `cycle` itertools function goes between two values:
 # https://docs.python.org/3/library/itertools.html#itertools.cycle
 
 class Animation:
@@ -24,7 +23,7 @@ class Animation:
         second_color = treeofcolor.rgb(247, 85, 144)
     
         if self.left:
-            # read the top comment for info about itertools!
+            # read the top comment for info about `cycle` from itertools!
             return treeofcolor.Frame(cycle([first_color, second_color]))
         else:
             return treeofcolor.Frame(cycle([second_color, first_color]))

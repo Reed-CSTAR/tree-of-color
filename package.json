@@ -19,6 +19,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
+		"@iconify-icons/codicon": "^1.2.30",
 		"@iconify-icons/iconoir": "^1.2.30",
 		"@iconify-icons/vscode-icons": "^1.2.29",
 		"@iconify/svelte": "^4.2.0",
@@ -28,6 +29,7 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/node": "^22.14.0",
+		"@vscode-elements/elements": "^1.15.0",
 		"@xterm/addon-fit": "^0.10.0",
 		"@xterm/xterm": "^5.5.0",
 		"eslint": "^9.18.0",

@@ -23,6 +23,9 @@ class Animation:
         # this allows us to display 0 at the first frame,
         # since the animator immediately requests a frame!
         self._increment_state()
+
+        # you can also see the binary output (as a list) in the `Terminal`!
+        print(binary)
     
         # itertools `chain` allows us to combine two iterators in succession.
         # https://docs.python.org/3/library/itertools.html#itertools.chain
