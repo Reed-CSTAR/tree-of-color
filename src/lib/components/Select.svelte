@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '@vscode-elements/elements/dist/vscode-single-select/index.js';
 	import type { VscodeSingleSelect } from '@vscode-elements/elements/dist/vscode-single-select/index';
 	import { onMount } from 'svelte';
 
@@ -18,7 +17,9 @@
 
 	let { options, value = $bindable(), onchange }: Props = $props();
 
-	onMount(() => {
+	onMount(async () => {
+        await import('@vscode-elements/elements/dist/vscode-single-select/index.js');
+
 		select?.addEventListener('change', () => {
 			value = select!.value;
 			onchange?.(value);
