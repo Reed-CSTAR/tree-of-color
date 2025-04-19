@@ -9,37 +9,37 @@ let gid: number;
 // allowing them to send frame requests
 let gbuffer: SharedArrayBuffer;
 
-let interrupt = new SharedArrayBuffer(1)
+let interrupt = new SharedArrayBuffer(1);
 
 /** From pyodide */
 type InFuncType = () => null | undefined | string | ArrayBuffer | Uint8Array | number;
 
 const stdin: InFuncType = () => {
-    // we add a timeout and use `wait` to allow processing of other tasks
-    // (e.g. worker messages) in the event loop
-    if (Atomics.wait(new Int32Array(gbuffer), 0, 0, 50) === 'timed-out') {
-        if ((new Uint8Array(interrupt))[0] != 0) {
-            return 'throw\n';
-        }
-        return 'wait\n';
-    }
+	// we add a timeout and use `wait` to allow processing of other tasks
+	// (e.g. worker messages) in the event loop
+	if (Atomics.wait(new Int32Array(gbuffer), 0, 0, 50) === 'timed-out') {
+		if (new Uint8Array(interrupt)[0] != 0) {
+			return 'throw\n';
+		}
+		return 'wait\n';
+	}
 
 	// allows us to accurately count frames on the client side (some are dropped)
 	// during worker initialiaztion
 	self.postMessage({ receivedFrame: true });
 
-    return 'frame\n';
-}
+	return 'frame\n';
+};
 
 async function load(): Promise<PyodideInterface> {
 	const pyodide = await loadPyodide({
-		indexURL: '/tree-of-color/artifacts/pyodide',
+		indexURL: '/tree-of-color/artifacts/pyodide'
 	});
 
 	let buffer = new Uint8Array(1500);
 
 	pyodide.setStdin({ stdin });
-    pyodide.setInterruptBuffer(interrupt)
+	pyodide.setInterruptBuffer(interrupt);
 
 	let idx = 0;
 	pyodide.setStderr({
@@ -74,7 +74,7 @@ interface Message {
 	buffer: SharedArrayBuffer;
 }
 
-self.addEventListener("message", async (event) => {
+self.addEventListener('message', async (event) => {
 	const pyodide = await pyodideLoader;
 
 	if (typeof event.data !== 'object' || event.data === null) {
@@ -82,7 +82,7 @@ self.addEventListener("message", async (event) => {
 		return;
 	}
 
-    (new Uint8Array(interrupt))[0] = 0;
+	new Uint8Array(interrupt)[0] = 0;
 
 	const { id, python, buffer }: Message = event.data;
 	self.postMessage({ loaded: true, data: event.data, interrupt });

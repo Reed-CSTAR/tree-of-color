@@ -4,9 +4,9 @@
 </script>
 
 <script lang="ts">
-	import Email from "./Email.svelte";
+	import Email from './Email.svelte';
 
-	import PaneHeader from "./PaneHeader.svelte";
+	import PaneHeader from './PaneHeader.svelte';
 
 	interface Props {
 		lights: Uint8Array | undefined;
@@ -17,7 +17,7 @@
 </script>
 
 <div class="lightsWrapper">
-	<PaneHeader onclear={() => lights = undefined}>
+	<PaneHeader onclear={() => (lights = undefined)}>
 		Lights
 		{#if frameCount}
 			(frame {frameCount})
@@ -37,7 +37,7 @@
 						{@const r = lights[(strip * lightCount + light) * 3]}
 						{@const g = lights[(strip * lightCount + light) * 3 + 1]}
 						{@const b = lights[(strip * lightCount + light) * 3 + 2]}
-	
+
 						<div class="light" style="background-color: rgb({r}, {g}, {b})"></div>
 					{/each}
 				</div>
@@ -50,11 +50,12 @@
 				<span style:color="rgb(234, 255, 150)">Run</span> to run the Python <br />
 				script (and see some colors!), and press
 				<span style:color="rgb(212, 66, 64)">Stop</span> to stop the script. <br /><br />
-	
+
 				The tree itself will have 5 strips with 100 LEDs each. When you run <br />
 				the python code, each strip will be boxed in the visualization. <br /><br />
 
-				Send your creation to us or ask questions at <Email /><br />(make sure to attach your share link!)
+				Send your creation to us or ask questions at <Email /><br />(make sure to attach your share
+				link!)
 			</p>
 		{/if}
 	</div>

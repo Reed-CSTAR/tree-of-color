@@ -3,24 +3,24 @@
 	import type MonacoE from 'monaco-editor';
 	import { onMount } from 'svelte';
 
-    interface Props {
-        value: string;
-        vimMode: boolean;
-    }
+	interface Props {
+		value: string;
+		vimMode: boolean;
+	}
 
-    let { value = $bindable(), vimMode }: Props = $props()
+	let { value = $bindable(), vimMode }: Props = $props();
 
 	let editor = $state<MonacoE.editor.IStandaloneCodeEditor>();
 
-    let initVimMode: any;
+	let initVimMode: any;
 	let vimInstance: any;
 
 	onMount(async () => {
 		const mvImport = await import('monaco-vim');
 		initVimMode = mvImport.initVimMode;
-    })
+	});
 
-    $effect(() => {
+	$effect(() => {
 		if (editor) {
 			if (vimMode) {
 				vimInstance = initVimMode(editor, document.getElementById('statusBar'));
@@ -32,24 +32,24 @@
 </script>
 
 <div class="editor">
-    <Monaco
-        options={{ language: 'python', automaticLayout: true }}
-        theme="vs-dark"
-        on:ready={async ({ detail }) => {
-            editor = detail;
-        }}
-        bind:value
-    />
-    <div id="statusBar" class:vimMode></div>
+	<Monaco
+		options={{ language: 'python', automaticLayout: true }}
+		theme="vs-dark"
+		on:ready={async ({ detail }) => {
+			editor = detail;
+		}}
+		bind:value
+	/>
+	<div id="statusBar" class:vimMode></div>
 </div>
 
 <style lang="scss">
-    .editor {
-        width: 100%;
-        height: 100%;
-    }
+	.editor {
+		width: 100%;
+		height: 100%;
+	}
 
-    .editor:has(> .vimMode) {
+	.editor:has(> .vimMode) {
 		height: calc(100% - 1.5rem);
 	}
 

@@ -9,11 +9,15 @@ interface Example {
 }
 
 export const examples: Example[] = [
-	{ content: exampleanimation, name: 'Example: Flipping', description: "Lights that flip between two colors." },
-	{ content: examplestatic, name: 'Example: Static', description: "A solid, unchanging display." },
-	{ content: examplecount, name: 'Example: Counting', description: "Lights that count in binary." },
+	{
+		content: exampleanimation,
+		name: 'Example: Flipping',
+		description: 'Lights that flip between two colors.'
+	},
+	{ content: examplestatic, name: 'Example: Static', description: 'A solid, unchanging display.' },
+	{ content: examplecount, name: 'Example: Counting', description: 'Lights that count in binary.' }
 ];
 
 export function findExampleByName(name: string): Example | undefined {
-	return examples.find(example => example.name == name);
+	return examples.find((example) => example.name == name);
 }

@@ -8,7 +8,7 @@
 	import vim from '@iconify-icons/vscode-icons/file-type-vim';
 	import { examples, findExampleByName } from '$lib/examples';
 	import lz from 'lz-string';
-    import toast from 'svelte-french-toast';
+	import toast from 'svelte-french-toast';
 	import Editor from '$lib/components/Editor.svelte';
 	import Select from '$lib/Select.svelte';
 	import Terminal from '$lib/Terminal.svelte';
@@ -28,7 +28,7 @@
 	let example = $state<string>(examples[0].name);
 
 	let status = $state<'stopped' | 'starting' | 'started' | 'fatal' | 'stopping'>('stopped');
-	let lastStopAttempt = $state(new Date().getTime())
+	let lastStopAttempt = $state(new Date().getTime());
 
 	/** Pyodide worker */
 	let worker = $state<Worker | undefined>();
@@ -36,7 +36,7 @@
 	let id = $state<number>(0);
 	/** Synchronises frames between us and the web worker. */
 	let buffer: SharedArrayBuffer;
-    let interruptBuffer: SharedArrayBuffer;
+	let interruptBuffer: SharedArrayBuffer;
 	/** RAF id */
 	let raf: number;
 
@@ -48,7 +48,7 @@
 
 	let vimMode = $state(false);
 	let terminalMode = $state(false);
-	let consoleOutput = $state("")
+	let consoleOutput = $state('');
 
 	onMount(async () => {
 		if (window.location.hash.substring(1)) {
@@ -99,9 +99,9 @@
 					return;
 				}
 
-				if ('loaded' in data && data['loaded'] && data["interrupt"]) {
+				if ('loaded' in data && data['loaded'] && data['interrupt']) {
 					status = 'started';
-                    interruptBuffer = data["interrupt"];
+					interruptBuffer = data['interrupt'];
 
 					lastFrameTime = 0;
 				}
@@ -114,7 +114,7 @@
 						// but it saves us trouble if we accidentally catch
 						// line info from the file without this error
 						// actually being thrown
-						if (data.error.includes("RuntimeError: ⋆Intentionally thrown error.⋆")) {
+						if (data.error.includes('RuntimeError: ⋆Intentionally thrown error.⋆')) {
 							status = 'stopped';
 							return;
 						}
@@ -129,14 +129,14 @@
 					if (data['output'] instanceof Uint8Array) {
 						lights = data['output'];
 					} else if (typeof data['output'] === 'string') {
-						consoleOutput += data.output + "\n";
+						consoleOutput += data.output + '\n';
 					}
 				}
 			}
 		};
 
-        worker.onerror = (ev) => console.error(ev)
-        worker.onmessageerror = (ev) => console.error(ev)
+		worker.onerror = (ev) => console.error(ev);
+		worker.onmessageerror = (ev) => console.error(ev);
 
 		lastFrameTime = Date.now();
 		frame();
@@ -148,7 +148,7 @@
 			worker = new PyodideWorker();
 			status = 'stopped';
 		} else {
-            (new Uint8Array(interruptBuffer))[0] = 2;
+			new Uint8Array(interruptBuffer)[0] = 2;
 			status = 'stopping';
 			lastStopAttempt = new Date().getTime();
 		}
@@ -166,30 +166,29 @@
 	}
 
 	$effect(() => {
-		value = findExampleByName(example)!.content
-	})
+		value = findExampleByName(example)!.content;
+	});
 </script>
 
 <div class="container">
 	<header>
 		<div class="left">
 			<div class="logoContainer">
-                <TreeIcon />
-            </div>
-			<h1>
-				Tree of Color
-			</h1>
+				<TreeIcon />
+			</div>
+			<h1>Tree of Color</h1>
 		</div>
 		<div class="right">
-			<Select
-				bind:value={example}
-				options={examples}
-			/>
+			<Select bind:value={example} options={examples} />
 			<div class="iconAlign icon">
-				<button class="smallIcon" title="Share" onclick={() => {
-                    navigator.clipboard.writeText(location.href);
-                    toast.success("Copied share link to clipboard!")
-                }}>
+				<button
+					class="smallIcon"
+					title="Share"
+					onclick={() => {
+						navigator.clipboard.writeText(location.href);
+						toast.success('Copied share link to clipboard!');
+					}}
+				>
 					<Icon icon={share} color="white" width="100%" height="100%" />
 				</button>
 			</div>
@@ -232,15 +231,15 @@
 					>
 					<Button
 						color={[59, 0, 0]}
-                        title="Restarts the Python Service Worker"
-                        disabled={worker == undefined}
+						title="Restarts the Python Service Worker"
+						disabled={worker == undefined}
 						onclick={() => {
 							lights = undefined;
-							toast.success("Killing & restarting Python daemon!")
+							toast.success('Killing & restarting Python daemon!');
 							stop(true);
 						}}>Kill</Button
 					>
-					<Button color={[0, 122, 204]} onclick={() => terminalMode = !terminalMode}>
+					<Button color={[0, 122, 204]} onclick={() => (terminalMode = !terminalMode)}>
 						{#if terminalMode}
 							Hide Terminal
 						{:else}
@@ -249,7 +248,7 @@
 					</Button>
 				</div>
 				<div class="status">
-                    <Spinner active={status === 'starting' || status === 'stopping'} />
+					<Spinner active={status === 'starting' || status === 'stopping'} />
 					<div class="innerStatus">
 						{#if status === 'fatal'}
 							<!-- we give a nicer name to fatal errors to discourage killing -->
@@ -343,12 +342,12 @@
 			align-items: center;
 		}
 
-        h1 {
-            margin: 0;
-            color: #d4d4d4;
-            font-weight: 400;
-            margin-left: calc(0.5rem + 4px);
-        }
+		h1 {
+			margin: 0;
+			color: #d4d4d4;
+			font-weight: 400;
+			margin-left: calc(0.5rem + 4px);
+		}
 	}
 
 	.editor {
