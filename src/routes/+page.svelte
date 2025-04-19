@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PyodideWorker from '../lib/worker?worker';
-	import Lights from '$lib/Lights.svelte';
+	import Lights from '$lib/ui/Lights.svelte';
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import share from '@iconify-icons/codicon/live-share';
@@ -10,11 +10,11 @@
 	import lz from 'lz-string';
 	import toast from 'svelte-french-toast';
 	import Editor from '$lib/components/Editor.svelte';
-	import Select from '$lib/Select.svelte';
-	import Terminal from '$lib/Terminal.svelte';
+	import Select from '$lib/components/Select.svelte';
+	import Terminal from '$lib/ui/Terminal.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import TreeIcon from '$lib/TreeIcon.svelte';
+	import TreeIcon from '$lib/ui/TreeIcon.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
