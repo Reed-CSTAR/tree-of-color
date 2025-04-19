@@ -11,7 +11,7 @@ let gbuffer: SharedArrayBuffer;
 
 let interrupt = new SharedArrayBuffer(1);
 
-/** From pyodide */
+/** From some private pyodide type */
 type InFuncType = () => null | undefined | string | ArrayBuffer | Uint8Array | number;
 
 const stdin: InFuncType = () => {

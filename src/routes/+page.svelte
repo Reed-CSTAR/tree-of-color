@@ -2,19 +2,14 @@
 	import PyodideWorker from '../lib/worker?worker';
 	import Lights from '$lib/ui/Lights.svelte';
 	import { onMount } from 'svelte';
-	import Icon from '@iconify/svelte';
-	import share from '@iconify-icons/codicon/live-share';
-	import github from '@iconify-icons/codicon/github';
-	import vim from '@iconify-icons/vscode-icons/file-type-vim';
 	import { examples, findExampleByName } from '$lib/examples';
 	import lz from 'lz-string';
 	import toast from 'svelte-french-toast';
 	import Editor from '$lib/components/Editor.svelte';
-	import Select from '$lib/components/Select.svelte';
 	import Terminal from '$lib/ui/Terminal.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import TreeIcon from '$lib/ui/TreeIcon.svelte';
+	import Header from '$lib/ui/Header.svelte';
 
 	const { decompressFromBase64, compressToBase64 } = lz;
 
@@ -171,39 +166,7 @@
 </script>
 
 <div class="container">
-	<header>
-		<div class="left">
-			<div class="logoContainer">
-				<TreeIcon />
-			</div>
-			<h1>Tree of Color</h1>
-		</div>
-		<div class="right">
-			<Select bind:value={example} options={examples} />
-			<div class="iconAlign icon">
-				<button
-					class="smallIcon"
-					title="Share"
-					onclick={() => {
-						navigator.clipboard.writeText(location.href);
-						toast.success('Copied share link to clipboard!');
-					}}
-				>
-					<Icon icon={share} color="white" width="100%" height="100%" />
-				</button>
-			</div>
-			<div class="iconAlign icon">
-				<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" target="_blank">
-					<Icon icon={github} color="white" width="100%" height="100%" />
-				</a>
-			</div>
-			<div class="iconAlign icon">
-				<button class="smallIcon" onclick={() => (vimMode = !vimMode)} title="Vim Mode">
-					<Icon icon={vim} color="white" width="100%" height="100%" />
-				</button>
-			</div>
-		</div>
-	</header>
+	<Header bind:example bind:vimMode />
 	<main>
 		<div class="editor">
 			<Editor {vimMode} bind:value />
@@ -330,54 +293,11 @@
 		}
 	}
 
-	header {
-		background-color: #1e1e1e;
-		border-bottom: 1px solid #252525;
-		padding: 0.75rem 0.5rem;
-		display: flex;
-		justify-content: space-between;
-
-		.left {
-			display: flex;
-			align-items: center;
-		}
-
-		h1 {
-			margin: 0;
-			color: #d4d4d4;
-			font-weight: 400;
-			margin-left: calc(0.5rem + 4px);
-		}
-	}
-
 	.editor {
 		width: 100%;
 		padding-top: 1rem;
 		background-color: #1e1e1e;
 		height: calc(100vh - (68px - 1rem) - 2 * 0.75rem - 1px);
-	}
-
-	.smallIcon {
-		width: calc(4 * (68px - 1rem) / 5);
-		height: calc(4 * (68px - 1rem) / 5);
-		background-color: rgba(0, 0, 0, 0);
-		border: none;
-		padding: 0;
-		display: inline-block;
-		cursor: pointer;
-	}
-
-	.iconAlign {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.right {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.25rem;
 	}
 
 	.errorWarning {
