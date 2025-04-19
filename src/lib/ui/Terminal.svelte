@@ -9,7 +9,7 @@
 		output: string;
 	}
 
-	let { output }: Props = $props();
+	let { output = $bindable() }: Props = $props();
 
 	let terminalDiv = $state<HTMLDivElement>();
 	let term = $state<Terminal>();
@@ -39,7 +39,7 @@
 <svelte:window onresize={() => fitAddon?.fit()} />
 
 <div class="terminalPane">
-	<PaneHeader onclear={() => term?.clear()}>Terminal</PaneHeader>
+	<PaneHeader onclear={() => output = ""}>Terminal</PaneHeader>
 	<div class="terminalWrap">
 		<div class="terminal" bind:this={terminalDiv}></div>
 	</div>

@@ -174,7 +174,7 @@
 			<div class="visMain">
 				<Lights {lights} frameCount={status === 'started' ? frameCount : undefined} />
 				{#if terminalMode}
-					<Terminal output={consoleOutput} />
+					<Terminal bind:output={consoleOutput} />
 				{/if}
 			</div>
 			<div class="toolbar">
