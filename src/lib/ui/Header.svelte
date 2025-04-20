@@ -39,7 +39,7 @@
 			</button>
 		</div>
 		<div class="iconAlign">
-			<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" target="_blank">
+			<a class="smallIcon" href="https://github.com/Reed-CSTAR/tree-of-color" title="This website's source on GitHub" target="_blank">
 				<Icon icon={github} color="white" width="100%" height="100%" />
 			</a>
 		</div>
