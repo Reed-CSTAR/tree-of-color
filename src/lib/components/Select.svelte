@@ -18,7 +18,7 @@
 	let { options, value = $bindable(), onchange }: Props = $props();
 
 	onMount(async () => {
-        await import('@vscode-elements/elements/dist/vscode-single-select/index.js');
+		await import('@vscode-elements/elements/dist/vscode-single-select/index.js');
 
 		select?.addEventListener('change', () => {
 			value = select!.value;

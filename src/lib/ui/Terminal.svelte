@@ -39,7 +39,7 @@
 <svelte:window onresize={() => fitAddon?.fit()} />
 
 <div class="terminalPane">
-	<PaneHeader onclear={() => output = ""}>Terminal</PaneHeader>
+	<PaneHeader onclear={() => (output = '')}>Terminal</PaneHeader>
 	<div class="terminalWrap">
 		<div class="terminal" bind:this={terminalDiv}></div>
 	</div>

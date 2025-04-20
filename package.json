@@ -17,6 +17,7 @@
 		"fetch": "tsx fetch.ts && tar -xvjf static/artifacts/tmp.tar.bz2 && mv pyodide static/artifacts/"
 	},
 	"devDependencies": {
+		"@astral-sh/ruff-wasm-bundler": "^0.11.6",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@iconify-icons/codicon": "^1.2.30",
@@ -46,12 +47,14 @@
 		"svelte-canvas": "^2.0.2",
 		"svelte-check": "^4.0.0",
 		"svelte-french-toast": "^1.2.0",
-		"svelte-monaco": "^1.0.3",
+		"svelte-monaco": "^1.0.4",
 		"svelte-mosaic": "^1.0.0",
 		"tsx": "^4.19.3",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
-		"vite": "^6.2.5"
+		"vite": "^6.2.5",
+		"vite-plugin-top-level-await": "^1.5.0",
+		"vite-plugin-wasm": "^3.4.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

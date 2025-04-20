@@ -156,7 +156,7 @@
 		raf = requestAnimationFrame(frame);
 		const now = Date.now();
 		const delta = now - lastFrameTime;
-		
+
 		if (delta > frameTime) {
 			requestWorkerFrame();
 			lastFrameTime = now - (delta % frameTime);
@@ -165,7 +165,11 @@
 </script>
 
 <div class="container">
-	<Header bind:example bind:vimMode onexamplechange={newExample => value = findExampleByName(newExample)!.content} />
+	<Header
+		bind:example
+		bind:vimMode
+		onexamplechange={(newExample) => (value = findExampleByName(newExample)!.content)}
+	/>
 	<main>
 		<div class="editor">
 			<Editor {vimMode} bind:value />
