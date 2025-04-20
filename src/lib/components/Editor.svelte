@@ -49,7 +49,6 @@
 
 	$effect(() => {
 		const model = editor?.getModel();
-		console.log(diagonistics);
 		if (monaco && model) {
 			monaco.editor.setModelMarkers(
 				model,
