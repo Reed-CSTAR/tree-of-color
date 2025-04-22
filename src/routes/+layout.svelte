@@ -6,14 +6,21 @@
 	import './app.css';
 
 	import { Toaster } from 'svelte-french-toast';
+	import Mobile from './Mobile.svelte';
 
 	interface Props {
 		children: import('svelte').Snippet;
 	}
 
-	const { children } = $props();
+	const { children }: Props = $props();
+
+	let isMobile = $state(false);
 </script>
+
+<Mobile bind:isMobile />
 
 <Toaster />
 
-{@render children?.()}
+{#if !isMobile}
+	{@render children?.()}
+{/if}
