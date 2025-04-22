@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/fira-code':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource/fira-sans':
         specifier: ^5.2.5
         version: 5.2.5
@@ -339,6 +342,9 @@ packages:
   '@eslint/plugin-kit@0.2.8':
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@fontsource/fira-code@5.2.5':
+    resolution: {integrity: sha512-Rn9PJoyfRr5D6ukEhZpzhpD+rbX2rtoz9QjkOuGxqFxrL69fQvhadMUBxQIOuTF4sTTkPRSKlAEpPjTKaI12QA==}
 
   '@fontsource/fira-sans@5.2.5':
     resolution: {integrity: sha512-N+GrTGOTIeYE/Wi5tY0RAnc1Tl3ddCdwfZQncvA1zH/lOpKerj9ZS5nfniSXDZ9wrXFRdWTH7anyrRDc+cMpCg==}
@@ -1695,6 +1701,8 @@ snapshots:
     dependencies:
       '@eslint/core': 0.13.0
       levn: 0.4.1
+
+  '@fontsource/fira-code@5.2.5': {}
 
   '@fontsource/fira-sans@5.2.5': {}
 

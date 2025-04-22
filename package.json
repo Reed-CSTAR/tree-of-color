@@ -62,6 +62,7 @@
 		]
 	},
 	"dependencies": {
+		"@fontsource/fira-code": "^5.2.5",
 		"@fontsource/fira-sans": "^5.2.5",
 		"monaco-editor": "^0.52.2"
 	}

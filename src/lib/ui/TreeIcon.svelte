@@ -7,7 +7,11 @@
 	let iconColor = $state(0);
 </script>
 
-<button title="Flip the logo color!" class="logo" onclick={() => (iconColor = (iconColor + 1) % colors.length)}>
+<button
+	title="Flip the logo color!"
+	class="logo"
+	onclick={() => (iconColor = (iconColor + 1) % colors.length)}
+>
 	<Icon icon={tree} color={colors[iconColor]} width="100%" height="100%" />
 </button>
 

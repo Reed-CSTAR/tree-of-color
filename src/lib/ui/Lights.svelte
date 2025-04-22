@@ -18,12 +18,13 @@
 
 <div class="lightsWrapper">
 	<PaneHeader onclear={() => (lights = undefined)}>
-		Lights
-		{#if frameCount}
-			(frame {frameCount})
-		{:else if lights !== undefined}
-			(nothing is running!)
-		{/if}
+		Lights <span class="frame-count">
+			{#if frameCount}
+				(frame {frameCount})
+			{:else if lights !== undefined}
+				(nothing is running!)
+			{/if}
+		</span>
 	</PaneHeader>
 	<div class="lights">
 		{#if lights}
@@ -114,5 +115,9 @@
 		a {
 			color: aquamarine;
 		}
+	}
+
+	.frame-count {
+		font-family: 'Fira Code', 'monospace';
 	}
 </style>
