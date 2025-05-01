@@ -3,7 +3,7 @@ import treeofcolor
 
 from itertools import cycle
 
-# the `cycle` itertools function goes between two values:
+# the `cycle` itertools function goes between multiple values:
 # https://docs.python.org/3/library/itertools.html#itertools.cycle
 
 class Animation:
