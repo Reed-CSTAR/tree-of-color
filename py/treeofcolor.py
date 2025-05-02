@@ -59,6 +59,7 @@ class App:
             return
 
     def _mainloop(self):
+        last_frame: Frame
         while True:
             req = input()
             
@@ -78,8 +79,9 @@ class App:
                 raise ValueError(f'Server sent malformed request "{req}".')
 
             if self._current_frame % self.frame_ratio == 0:
-                sys.stderr.buffer.write(self.callback().serialize())
-            
+                last_frame = self.callback().serialize()
+            sys.stderr.buffer.write(last_frame)
+
             self._current_frame = self._current_frame + 1
 
 def _require_byte(x: int):
